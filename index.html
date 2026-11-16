@@ -7,8 +7,8 @@
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="DVELA Finanzas">
-    <title>DVELA SHOP | Control Financiero & Patrimonial</title>
+    <meta name="apple-mobile-web-app-title" content="DVELA Finanzas S/">
+    <title>DVELA SHOP | Control Financiero & Patrimonial (Soles)</title>
     <link id="dynamicFavicon" rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 120'%3E%3Ccircle cx='60' cy='60' r='57' fill='%23EAD2B3' stroke='%235E3A1E' stroke-width='5'/%3E%3Ccircle cx='60' cy='60' r='49' fill='none' stroke='%23B8432E' stroke-width='4'/%3E%3Cpath d='M36 52 L32 32 L48 44 Z' fill='%23D99B26' stroke='%235E3A1E' stroke-width='3'/%3E%3Cpath d='M84 52 L88 32 L72 44 Z' fill='%23D99B26' stroke='%235E3A1E' stroke-width='3'/%3E%3Cellipse cx='60' cy='62' rx='26' ry='22' fill='%23D99B26' stroke='%235E3A1E' stroke-width='3'/%3E%3Cpath d='M45 59 Q50 53 55 59' fill='none' stroke='%233B2313' stroke-width='4' stroke-linecap='round'/%3E%3Cpath d='M65 59 Q70 53 75 59' fill='none' stroke='%233B2313' stroke-width='4' stroke-linecap='round'/%3E%3Cpath d='M40 78 Q60 86 80 78' fill='none' stroke='%23B8432E' stroke-width='6' stroke-linecap='round'/%3E%3Ccircle cx='60' cy='83' r='5' fill='%23FFE082' stroke='%235E3A1E' stroke-width='2'/%3E%3C/svg%3E">
     <link id="dynamicAppleIcon" rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 120'%3E%3Crect width='120' height='120' rx='28' fill='%2316100C'/%3E%3Ccircle cx='60' cy='60' r='50' fill='%23EAD2B3' stroke='%23D99B26' stroke-width='4'/%3E%3Cpath d='M36 52 L32 32 L48 44 Z' fill='%23D99B26' stroke='%235E3A1E' stroke-width='3'/%3E%3Cpath d='M84 52 L88 32 L72 44 Z' fill='%23D99B26' stroke='%235E3A1E' stroke-width='3'/%3E%3Cellipse cx='60' cy='62' rx='26' ry='22' fill='%23D99B26' stroke='%235E3A1E' stroke-width='3'/%3E%3Cpath d='M45 59 Q50 53 55 59' fill='none' stroke='%233B2313' stroke-width='4' stroke-linecap='round'/%3E%3Cpath d='M65 59 Q70 53 75 59' fill='none' stroke='%233B2313' stroke-width='4' stroke-linecap='round'/%3E%3Cpath d='M40 78 Q60 86 80 78' fill='none' stroke='%23B8432E' stroke-width='6' stroke-linecap='round'/%3E%3Ccircle cx='60' cy='83' r='5' fill='%23FFE082' stroke='%235E3A1E' stroke-width='2'/%3E%3C/svg%3E">
     
@@ -200,7 +200,7 @@
                                 DVELA <span class="text-brandGold">SHOP</span>
                             </h1>
                             <span class="hidden md:inline-block px-2 py-0.5 rounded-full bg-brandTerracotta/20 border border-brandTerracotta/40 text-brandGoldLight text-[10px] font-bold tracking-wide">
-                                FINANZAS
+                                FINANZAS • SOLES
                             </span>
                         </div>
                         <p id="brandHeaderSlogan" class="hidden sm:block text-xs text-amber-200/70 font-mono tracking-tight truncate">
@@ -209,7 +209,7 @@
                     </div>
                 </div>
 
-                <!-- Switcher de Moneda, Hora Perú, Estado Nube y Herramientas -->
+                <!-- Hora Perú, Indicador Moneda Soles, Estado Nube y Herramientas -->
                 <div class="flex items-center gap-2 sm:gap-3">
                     <!-- Hora Exacta Perú -->
                     <div class="hidden xl:flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-darkBorder bg-darkBg/90 text-amber-200/90 text-xs font-mono">
@@ -217,14 +217,9 @@
                         <span id="peruClockDisplay">--/--/---- • --:--:-- PE</span>
                     </div>
 
-                    <!-- Switcher PEN / EUR -->
-                    <div class="bg-darkBg p-1 rounded-xl border border-darkBorder flex items-center shadow-inner">
-                        <button id="btnCurrencyPEN" onclick="switchCurrency('PEN')" class="px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-bold font-mono transition-all duration-200 flex items-center gap-1.5 bg-brandTerracotta text-white shadow-md">
-                            <span class="text-sm">🇵🇪</span> <span class="hidden sm:inline">Soles</span> (S/)
-                        </button>
-                        <button id="btnCurrencyEUR" onclick="switchCurrency('EUR')" class="px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-bold font-mono transition-all duration-200 flex items-center gap-1.5 text-amber-200/60 hover:text-white">
-                            <span class="text-sm">🇪🇺</span> <span class="hidden sm:inline">Euros</span> (€)
-                        </button>
+                    <!-- Badge Moneda Soles (PEN) -->
+                    <div class="px-3 py-1.5 rounded-xl border border-brandTerracotta/50 bg-brandTerracotta/20 text-brandCream text-xs font-bold font-mono flex items-center gap-1.5 shadow-inner">
+                        <span class="text-sm">🇵🇪</span> <span class="hidden sm:inline">Soles</span> (S/)
                     </div>
 
                     <!-- Indicador de Sincronización en la Nube -->
@@ -238,7 +233,7 @@
                         <button id="settingsBtn" onclick="toggleSettingsMenu(event)" class="w-10 h-10 rounded-xl border border-darkBorder bg-darkBg hover:bg-darkHover flex items-center justify-center text-brandGold transition-all active:scale-95" title="Ajustes de Nube, Marca y Datos">
                             <i class="fa-solid fa-gear"></i>
                         </button>
-                        <div id="settingsDropdown" class="absolute right-0 mt-2 w-60 bg-darkCard border border-darkBorder rounded-xl shadow-2xl p-2 hidden z-50">
+                        <div id="settingsDropdown" class="absolute right-0 mt-2 w-64 bg-darkCard border border-darkBorder rounded-xl shadow-2xl p-2 hidden z-50">
                             <button onclick="openCloudSettingsModal(); closeSettingsMenu();" class="w-full text-left px-3 py-2 text-xs text-brandGoldLight hover:bg-darkHover rounded-lg flex items-center gap-2 font-semibold">
                                 <i class="fa-solid fa-cloud text-brandGold"></i> Nube Firebase & Logo Tienda
                             </button>
@@ -246,6 +241,12 @@
                                 <i class="fa-solid fa-arrows-rotate"></i> Sincronizar Ahora con Nube
                             </button>
                             <hr class="border-darkBorder my-1">
+                            <button onclick="toggleAutoBackup24h(); closeSettingsMenu();" class="w-full text-left px-3 py-2 text-xs text-brandCream hover:bg-darkHover rounded-lg flex items-center justify-between gap-2">
+                                <span class="flex items-center gap-2">
+                                    <i class="fa-solid fa-clock-rotate-left text-brandGold"></i> Auto-Copia Local 24h
+                                </span>
+                                <span id="autoBackupStatusPill" class="px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-300 font-mono text-[10px] font-bold">ON</span>
+                            </button>
                             <button onclick="exportData(); closeSettingsMenu();" class="w-full text-left px-3 py-2 text-xs text-gray-200 hover:bg-darkHover rounded-lg flex items-center gap-2">
                                 <i class="fa-solid fa-download text-accentBlue"></i> Descargar Respaldo (.JSON)
                             </button>
@@ -255,7 +256,7 @@
                             </label>
                             <hr class="border-darkBorder my-1">
                             <button onclick="confirmResetData(); closeSettingsMenu();" class="w-full text-left px-3 py-2 text-xs text-accentRed hover:bg-red-950/40 rounded-lg flex items-center gap-2">
-                                <i class="fa-solid fa-trash"></i> Reiniciar Datos
+                                <i class="fa-solid fa-trash"></i> Reiniciar Datos en Soles
                             </button>
                         </div>
                     </div>
@@ -263,6 +264,34 @@
 
             </div>
         </header>
+
+        <!-- Banner de Aviso 24 Horas para Copia Local -->
+        <div id="backupReminderBanner" class="hidden max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4">
+            <div class="bg-gradient-to-r from-amber-950/90 via-darkCard to-amber-950/90 border border-brandGold/60 rounded-2xl p-3.5 sm:px-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 shadow-xl shadow-black/40">
+                <div class="flex items-start sm:items-center gap-3">
+                    <div class="w-9 h-9 rounded-xl bg-brandGold/20 border border-brandGold/40 text-brandGold flex items-center justify-center shrink-0 mt-0.5 sm:mt-0">
+                        <i class="fa-solid fa-shield-halved text-sm"></i>
+                    </div>
+                    <div>
+                        <p class="text-xs sm:text-sm font-bold text-brandCream flex items-center gap-2">
+                            Recordatorio de Seguridad (24 Horas)
+                            <span class="px-2 py-0.5 rounded bg-brandGold/20 text-brandGoldLight font-mono text-[10px]">RESPALDO LOCAL</span>
+                        </p>
+                        <p id="backupReminderText" class="text-[11px] sm:text-xs text-amber-200/80 mt-0.5">
+                            Han pasado 24 horas desde tu última copia local. Se recomienda descargar un respaldo .JSON en tu dispositivo.
+                        </p>
+                    </div>
+                </div>
+                <div class="flex items-center gap-2 w-full sm:w-auto justify-end shrink-0">
+                    <button onclick="dismissBackupReminder24h()" class="px-3 py-1.5 rounded-xl border border-darkBorder bg-darkBg/80 hover:bg-darkHover text-[11px] font-semibold text-amber-200/70 transition-all">
+                        Posponer 24h
+                    </button>
+                    <button onclick="exportData()" class="px-4 py-1.5 rounded-xl bg-brandGold hover:bg-brandGoldLight text-darkBg font-extrabold text-xs shadow-md transition-all flex items-center gap-1.5">
+                        <i class="fa-solid fa-download"></i> Guardar Copia Ahora
+                    </button>
+                </div>
+            </div>
+        </div>
 
         <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
             
@@ -274,7 +303,7 @@
                             Soles (PEN)
                         </span>
                     </h2>
-                    <p class="text-xs text-amber-200/70">Control consolidado de ingresos, gastos, cobros y patrimonio de <strong class="text-brandGold">DVELA SHOP</strong>.</p>
+                    <p class="text-xs text-amber-200/70">Control consolidado de ingresos, gastos, cobros y patrimonio en Soles de <strong class="text-brandGold">DVELA SHOP</strong>.</p>
                 </div>
 
                 <button onclick="openModalTransaction()" class="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-gradient-to-r from-brandTerracotta to-amber-600 hover:from-red-700 hover:to-amber-500 text-white font-bold text-sm shadow-lg shadow-brandTerracotta/30 border border-brandGold/30 transition-all flex items-center justify-center gap-2 active:scale-95">
@@ -474,7 +503,7 @@
 
     <footer class="border-t border-darkBorder py-6 bg-darkCard/70 mt-12 text-center text-xs text-amber-200/60">
         <p class="font-semibold text-brandCream">DVELA SHOP &copy; 2026 • <span class="text-brandGold">TECNOLOGÍA • CONFIANZA • CALIDAD</span></p>
-        <p class="text-[11px] mt-1 text-amber-200/40">Control Financiero Táctico en Soles (S/) y Euros (€) sincronizado en la nube</p>
+        <p class="text-[11px] mt-1 text-amber-200/40">Control Financiero Táctico en Soles (S/) sincronizado en la nube</p>
     </footer>
 
     <!-- Toast Notificación -->
@@ -571,7 +600,7 @@
             <div class="flex items-center justify-between border-b border-darkBorder pb-4">
                 <h3 class="text-base font-bold text-brandCream flex items-center gap-2">
                     <i class="fa-solid fa-pen-to-square text-brandGold"></i>
-                    Nuevo Registro Financiero
+                    Nuevo Registro Financiero (S/)
                 </h3>
                 <button onclick="closeModalTransaction()" class="text-amber-200/60 hover:text-white transition-colors">
                     <i class="fa-solid fa-xmark text-lg"></i>
@@ -689,7 +718,7 @@
         </div>
     </div>
 
-    <!-- Script Principal con Sincronización Firebase Firestore + Respaldo Local -->
+    <!-- Script Principal con Sincronización Firebase Firestore + Respaldo Local (Solo Soles PEN, conservando EUR intacto) -->
     <script type="module">
         import { initializeApp, getApps, deleteApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
@@ -698,6 +727,8 @@
         const STORAGE_KEY = 'ApexFinance_Data_v1';
         const CLOUD_CFG_KEY = 'DvelaFinance_CloudCfg_v1';
         const BRAND_CFG_KEY = 'DvelaFinance_BrandCfg_v1';
+        const BACKUP_CFG_KEY = 'DvelaFinance_Backup24h_v1';
+        const TWENTY_FOUR_HOURS_MS = 24 * 60 * 60 * 1000;
 
         const PRESET_FIREBASE_CONFIG = {
             apiKey: "AIzaSyCWbmkEWub3hO_yYLhlszNTD2vF3ScjdBA",
@@ -728,6 +759,12 @@
         let cloudConfig = {
             spaceId: 'DVELA_FINANZAS_01',
             firebaseConfig: PRESET_FIREBASE_CONFIG
+        };
+
+        let backup24hState = {
+            autoEnabled: true,
+            lastLocalBackupAt: 0,
+            lastReminderAt: 0
         };
 
         let firebaseApp = null;
@@ -790,12 +827,101 @@
             loadBrandConfig();
             loadCloudConfig();
             loadDataFromStorage();
+            loadBackup24hState();
             setDefaultDates();
             setupCurrencyUI();
             updateTagDropdowns();
             renderAll();
             await initCloudSync();
+            check24HourBackupAndReminder();
+            setInterval(check24HourBackupAndReminder, 60 * 1000);
         });
+
+        /* ==========================================================================
+           SISTEMA DE COPIA LOCAL AUTOMÁTICA Y AVISO CADA 24 HORAS
+           ========================================================================== */
+        function loadBackup24hState() {
+            try {
+                const saved = localStorage.getItem(BACKUP_CFG_KEY);
+                if (saved) {
+                    backup24hState = { ...backup24hState, ...JSON.parse(saved) };
+                } else {
+                    backup24hState.lastLocalBackupAt = Date.now();
+                    backup24hState.lastReminderAt = Date.now();
+                    saveBackup24hState();
+                }
+            } catch (e) {}
+            updateAutoBackupUI();
+        }
+
+        function saveBackup24hState() {
+            try {
+                localStorage.setItem(BACKUP_CFG_KEY, JSON.stringify(backup24hState));
+            } catch (e) {}
+        }
+
+        function updateAutoBackupUI() {
+            const pill = document.getElementById('autoBackupStatusPill');
+            if (!pill) return;
+            if (backup24hState.autoEnabled) {
+                pill.innerText = 'ON';
+                pill.className = 'px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-300 font-mono text-[10px] font-bold';
+            } else {
+                pill.innerText = 'OFF';
+                pill.className = 'px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-300 font-mono text-[10px] font-bold';
+            }
+        }
+
+        window.toggleAutoBackup24h = function() {
+            backup24hState.autoEnabled = !backup24hState.autoEnabled;
+            saveBackup24hState();
+            updateAutoBackupUI();
+            showToast(
+                backup24hState.autoEnabled ? "Auto-Copia 24h Activada" : "Auto-Copia 24h Desactivada",
+                backup24hState.autoEnabled ? "Se guardará copia local cada 24 horas" : "Solo se mostrará aviso manual cada 24h",
+                !backup24hState.autoEnabled
+            );
+        };
+
+        function check24HourBackupAndReminder() {
+            const now = Date.now();
+            const totalRecords = (appState.transactions.PEN?.length || 0) + (appState.transactions.EUR?.length || 0);
+            if (totalRecords === 0) return;
+
+            const elapsedSinceBackup = now - (backup24hState.lastLocalBackupAt || 0);
+            const elapsedSinceReminder = now - (backup24hState.lastReminderAt || 0);
+
+            if (elapsedSinceBackup >= TWENTY_FOUR_HOURS_MS) {
+                if (backup24hState.autoEnabled) {
+                    downloadBackupFile(true);
+                    backup24hState.lastLocalBackupAt = now;
+                    backup24hState.lastReminderAt = now;
+                    saveBackup24hState();
+                    hideBackupReminderBanner();
+                    showToast("Copia Local 24h Guardada", "Respaldo .JSON descargado automáticamente");
+                } else if (elapsedSinceReminder >= TWENTY_FOUR_HOURS_MS) {
+                    showBackupReminderBanner();
+                }
+            } else if (elapsedSinceReminder >= TWENTY_FOUR_HOURS_MS) {
+                showBackupReminderBanner();
+            }
+        }
+
+        function showBackupReminderBanner() {
+            const banner = document.getElementById('backupReminderBanner');
+            if (banner) banner.classList.remove('hidden');
+        }
+
+        function hideBackupReminderBanner() {
+            const banner = document.getElementById('backupReminderBanner');
+            if (banner) banner.classList.add('hidden');
+        }
+
+        window.dismissBackupReminder24h = function() {
+            backup24hState.lastReminderAt = Date.now();
+            saveBackup24hState();
+            hideBackupReminderBanner();
+        };
 
         function loadBrandConfig() {
             try {
@@ -821,7 +947,7 @@
             } else {
                 headerName.innerText = brandConfig.name || 'DVELA SHOP';
             }
-            document.title = `${brandConfig.name || 'DVELA SHOP'} | Control Financiero`;
+            document.title = `${brandConfig.name || 'DVELA SHOP'} | Control Financiero (Soles)`;
             headerSlogan.innerText = brandConfig.slogan || 'TECNOLOGÍA • CONFIANZA • CALIDAD';
 
             const favEl = document.getElementById('dynamicFavicon');
@@ -924,11 +1050,11 @@
 
                             isApplyingRemoteUpdate = true;
                             appState = {
-                                currentCurrency: remoteData.currentCurrency || appState.currentCurrency || 'PEN',
+                                currentCurrency: 'PEN',
                                 tags: Array.isArray(remoteData.tags) && remoteData.tags.length ? remoteData.tags : appState.tags,
                                 transactions: {
                                     PEN: remoteData.transactions?.PEN || [],
-                                    EUR: remoteData.transactions?.EUR || []
+                                    EUR: remoteData.transactions?.EUR || appState.transactions.EUR || []
                                 },
                                 updatedAt: remoteData.updatedAt || Date.now()
                             };
@@ -963,7 +1089,12 @@
                 const docRef = doc(firestoreDb, 'artifacts', cloudConfig.firebaseConfig.projectId || 'dvela-finance', 'public', 'data', 'finances', cloudConfig.spaceId);
                 appState.updatedAt = Date.now();
                 const payload = {
-                    ...appState,
+                    tags: appState.tags,
+                    transactions: {
+                        PEN: appState.transactions.PEN || [],
+                        EUR: appState.transactions.EUR || []
+                    },
+                    updatedAt: appState.updatedAt,
                     brandConfig: {
                         name: brandConfig.name,
                         slogan: brandConfig.slogan,
@@ -1113,7 +1244,15 @@
                 const stored = localStorage.getItem(STORAGE_KEY);
                 if (stored) {
                     const parsed = JSON.parse(stored);
-                    appState = { ...appState, ...parsed };
+                    appState = {
+                        ...appState,
+                        ...parsed,
+                        currentCurrency: 'PEN',
+                        transactions: {
+                            PEN: parsed.transactions?.PEN || [],
+                            EUR: parsed.transactions?.EUR || []
+                        }
+                    };
                 }
             } catch (e) {
                 console.error("Error al cargar datos desde LocalStorage:", e);
@@ -1122,6 +1261,7 @@
 
         function saveDataToStorage() {
             try {
+                appState.currentCurrency = 'PEN';
                 localStorage.setItem(STORAGE_KEY, JSON.stringify(appState));
                 pushStateToCloud();
             } catch (e) {
@@ -1129,10 +1269,11 @@
             }
         }
 
-        function downloadBackupFile() {
+        function downloadBackupFile(isAuto = false) {
             try {
                 const dateStr = getPeruDateISO();
-                const filename = `DVELA_SHOP_Finanzas_${dateStr}.json`;
+                const prefix = isAuto ? 'DVELA_SHOP_AutoBackup24h_' : 'DVELA_SHOP_Finanzas_';
+                const filename = `${prefix}${dateStr}.json`;
                 const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(appState, null, 2));
                 const downloadAnchor = document.createElement('a');
                 downloadAnchor.setAttribute("href", dataStr);
@@ -1140,6 +1281,11 @@
                 document.body.appendChild(downloadAnchor);
                 downloadAnchor.click();
                 downloadAnchor.remove();
+
+                backup24hState.lastLocalBackupAt = Date.now();
+                backup24hState.lastReminderAt = Date.now();
+                saveBackup24hState();
+                hideBackupReminderBanner();
             } catch (e) {
                 console.error("Error al exportar respaldo:", e);
             }
@@ -1185,38 +1331,19 @@
             updateDateSelectorUI();
         }
 
-        window.switchCurrency = function(currency) {
-            if (appState.currentCurrency === currency) return;
-            appState.currentCurrency = currency;
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(appState));
-            setupCurrencyUI();
-            renderAll();
-        };
-
         function setupCurrencyUI() {
-            const isPEN = appState.currentCurrency === 'PEN';
-            const btnPEN = document.getElementById('btnCurrencyPEN');
-            const btnEUR = document.getElementById('btnCurrencyEUR');
             const badge = document.getElementById('currentCurrencyBadge');
-
-            if (isPEN) {
-                btnPEN.className = "px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-bold font-mono transition-all duration-200 flex items-center gap-1.5 bg-brandTerracotta text-white shadow-md";
-                btnEUR.className = "px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-bold font-mono transition-all duration-200 flex items-center gap-1.5 text-amber-200/60 hover:text-white";
+            if (badge) {
                 badge.innerText = "Soles (PEN)";
                 badge.className = "text-xs px-2.5 py-0.5 rounded-md bg-brandTerracotta/20 text-brandGoldLight border border-brandTerracotta/40 font-mono";
-            } else {
-                btnEUR.className = "px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-bold font-mono transition-all duration-200 flex items-center gap-1.5 bg-brandTerracotta text-white shadow-md";
-                btnPEN.className = "px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-bold font-mono transition-all duration-200 flex items-center gap-1.5 text-amber-200/60 hover:text-white";
-                badge.innerText = "Euros (EUR)";
-                badge.className = "text-xs px-2.5 py-0.5 rounded-md bg-emerald-500/15 text-accentGreen border border-emerald-500/30 font-mono";
             }
 
             const symbols = document.querySelectorAll('.formCurrencySymbol');
-            symbols.forEach(s => s.innerText = isPEN ? 'S/' : '€');
+            symbols.forEach(s => s.innerText = 'S/');
         }
 
         function getSymbol() {
-            return appState.currentCurrency === 'PEN' ? 'S/' : '€';
+            return 'S/';
         }
 
         function formatMoney(amount) {
@@ -1225,7 +1352,7 @@
         }
 
         function renderAll() {
-            const currentList = appState.transactions[appState.currentCurrency] || [];
+            const currentList = appState.transactions.PEN || [];
             const filteredList = filterByPeriod(currentList);
             
             let totalIncome = 0;
@@ -1316,7 +1443,7 @@
         }
 
         function renderCharts() {
-            const currentList = appState.transactions[appState.currentCurrency] || [];
+            const currentList = appState.transactions.PEN || [];
             const filteredList = filterByPeriod(currentList);
 
             document.getElementById('barChartSubtitle').innerText = 
@@ -1469,7 +1596,7 @@
             tbody.innerHTML = '';
             if (mobileList) mobileList.innerHTML = '';
 
-            let list = [...(appState.transactions[appState.currentCurrency] || [])];
+            let list = [...(appState.transactions.PEN || [])];
             list = filterByPeriod(list);
 
             if (currentListFilter !== 'all') {
@@ -1649,14 +1776,14 @@
                 status: (type === 'receivable' || type === 'debt') ? 'pending' : 'completed'
             };
 
-            appState.transactions[appState.currentCurrency].push(newTx);
+            appState.transactions.PEN.push(newTx);
             saveDataToStorage();
             closeModalTransaction();
             renderAll();
         };
 
         window.openModalPartial = function(id, type) {
-            const list = appState.transactions[appState.currentCurrency];
+            const list = appState.transactions.PEN;
             const item = list.find(t => t.id === id);
 
             if (!item) return;
@@ -1696,7 +1823,7 @@
 
             if (!activePartialTargetId || !activePartialType) return;
 
-            const list = appState.transactions[appState.currentCurrency];
+            const list = appState.transactions.PEN;
             const item = list.find(t => t.id === activePartialTargetId);
 
             if (!item) return;
@@ -1747,7 +1874,7 @@
         };
 
         window.settleFullItem = function(id, type) {
-            const list = appState.transactions[appState.currentCurrency];
+            const list = appState.transactions.PEN;
             const item = list.find(t => t.id === id);
 
             if (!item) return;
@@ -1788,8 +1915,8 @@
         };
 
         window.deleteTransaction = function(id) {
-            const list = appState.transactions[appState.currentCurrency];
-            appState.transactions[appState.currentCurrency] = list.filter(t => t.id !== id);
+            const list = appState.transactions.PEN;
+            appState.transactions.PEN = list.filter(t => t.id !== id);
             saveDataToStorage();
             renderAll();
         };
@@ -1830,7 +1957,7 @@
         }
 
         window.exportData = function() {
-            downloadBackupFile();
+            downloadBackupFile(false);
         };
 
         window.importData = function(event) {
@@ -1841,7 +1968,15 @@
                 try {
                     const importedState = JSON.parse(e.target.result);
                     if (importedState.transactions && importedState.tags) {
-                        appState = { ...appState, ...importedState };
+                        appState = {
+                            ...appState,
+                            ...importedState,
+                            currentCurrency: 'PEN',
+                            transactions: {
+                                PEN: importedState.transactions.PEN || [],
+                                EUR: importedState.transactions.EUR || appState.transactions.EUR || []
+                            }
+                        };
                         saveDataToStorage();
                         setupCurrencyUI();
                         updateTagDropdowns();
@@ -1854,12 +1989,12 @@
                     alert("Error al leer el archivo JSON.");
                 }
             };
-            fileReader.readAsText(file);
+            reader.readAsText(file);
         };
 
         window.confirmResetData = function() {
-            if (confirm("¿Borrar todos los registros? Esta acción también limpiará la nube.")) {
-                appState.transactions = { PEN: [], EUR: [] };
+            if (confirm("¿Borrar todos los registros en Soles? Los registros de Euros en la nube permanecerán intactos.")) {
+                appState.transactions.PEN = [];
                 saveDataToStorage();
                 renderAll();
             }
