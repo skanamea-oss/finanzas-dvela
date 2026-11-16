@@ -1137,7 +1137,7 @@
         window.switchCurrency = function(currency) {
             if (appState.currentCurrency === currency) return;
             appState.currentCurrency = currency;
-            saveDataToStorage();
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(appState));
             setupCurrencyUI();
             renderAll();
         };
