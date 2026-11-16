@@ -1,0 +1,1791 @@
+<!DOCTYPE html>
+<html lang="es" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DVELA SHOP | Control Financiero & Patrimonial</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts: Inter & JetBrains Mono -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Chart.js para Estadísticas -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        darkBg: '#16100C',        /* Ébano Madera Profundo */
+                        darkCard: '#221812',      /* Madera Tostada Oscura */
+                        darkBorder: '#3C2A1E',    /* Borde Madera Cálida */
+                        darkHover: '#4D3627',     /* Hover Cedro */
+                        brandTerracotta: '#B8432E', /* Terracota Oriental */
+                        brandGold: '#D99B26',     /* Dorado Imperial */
+                        brandGoldLight: '#F4C65D',
+                        brandCream: '#F6EFE6',    /* Crema Pergamino */
+                        accentGreen: '#10B981',   /* Ingresos */
+                        accentRed: '#EF4444',     /* Gastos */
+                        accentBlue: '#3B82F6',    /* Cuentas por Cobrar */
+                        accentAmber: '#F59E0B',   /* Deudas Pasivas */
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #16100C;
+            background-image: radial-gradient(circle at top right, rgba(184, 67, 46, 0.08), transparent 45%),
+                              radial-gradient(circle at bottom left, rgba(217, 155, 38, 0.06), transparent 45%);
+            color: #F6EFE6;
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+        }
+        
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #16100C;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #3C2A1E;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #D99B26;
+        }
+
+        .glass-card {
+            background: rgba(34, 24, 18, 0.88);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(60, 42, 30, 0.95);
+        }
+
+        .gold-ring {
+            box-shadow: 0 0 0 2px #D99B26, 0 4px 14px rgba(217, 155, 38, 0.35);
+        }
+
+        .glow-green:hover { box-shadow: 0 0 15px rgba(16, 185, 129, 0.25); }
+        .glow-red:hover { box-shadow: 0 0 15px rgba(239, 68, 68, 0.25); }
+        .glow-blue:hover { box-shadow: 0 0 15px rgba(59, 130, 246, 0.25); }
+        .glow-amber:hover { box-shadow: 0 0 15px rgba(245, 158, 11, 0.25); }
+        .glow-gold:hover { box-shadow: 0 0 18px rgba(217, 155, 38, 0.3); }
+
+        .modal {
+            transition: opacity 0.25s ease, transform 0.25s ease;
+        }
+        .modal-hidden {
+            opacity: 0;
+            pointer-events: none;
+            transform: scale(0.95);
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between selection:bg-brandGold selection:text-darkBg">
+
+    <div>
+        <header class="border-b border-darkBorder bg-darkCard/95 sticky top-0 z-30 backdrop-blur-md shadow-lg shadow-black/30">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-3">
+                
+                <!-- Identidad de Marca DVELA SHOP -->
+                <div class="flex items-center gap-3.5">
+                    <div id="brandLogoContainer" onclick="openCloudSettingsModal()" class="w-12 h-12 rounded-full bg-brandCream border-2 border-brandGold gold-ring flex items-center justify-center overflow-hidden shrink-0 cursor-pointer transition-transform hover:scale-105" title="Clic para personalizar logo o nube">
+                        <!-- Emblema SVG DVELA SHOP por defecto (reemplazable con foto propia) -->
+                        <svg id="defaultDvelaLogo" viewBox="0 0 120 120" class="w-full h-full">
+                            <defs>
+                                <radialGradient id="woodGrad" cx="50%" cy="45%" r="55%">
+                                    <stop offset="0%" stop-color="#EAD2B3"/>
+                                    <stop offset="70%" stop-color="#CFA97E"/>
+                                    <stop offset="100%" stop-color="#A87A4C"/>
+                                </radialGradient>
+                                <linearGradient id="catGold" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" stop-color="#FFE082"/>
+                                    <stop offset="50%" stop-color="#D99B26"/>
+                                    <stop offset="100%" stop-color="#9A6510"/>
+                                </linearGradient>
+                            </defs>
+                            <!-- Medallón de madera -->
+                            <circle cx="60" cy="60" r="57" fill="url(#woodGrad)" stroke="#5E3A1E" stroke-width="3"/>
+                            <circle cx="60" cy="60" r="51" fill="none" stroke="#B8432E" stroke-width="2"/>
+                            <circle cx="60" cy="60" r="47" fill="none" stroke="#5E3A1E" stroke-width="1" stroke-dasharray="3 2"/>
+                            <!-- Linterna oriental izquierda -->
+                            <line x1="25" y1="30" x2="25" y2="42" stroke="#5E3A1E" stroke-width="1.8"/>
+                            <ellipse cx="25" cy="50" rx="8" ry="10" fill="#B8432E" stroke="#5E3A1E" stroke-width="1.5"/>
+                            <line x1="25" y1="40" x2="25" y2="60" stroke="#D99B26" stroke-width="1.2"/>
+                            <line x1="25" y1="60" x2="25" y2="68" stroke="#B8432E" stroke-width="2"/>
+                            <!-- Texto superior DVELA -->
+                            <text x="60" y="29" text-anchor="middle" font-family="Inter, sans-serif" font-weight="900" font-size="16" fill="#3B4248" letter-spacing="1.5">DVELA</text>
+                            <text x="86" y="42" text-anchor="middle" font-family="Inter, sans-serif" font-weight="800" font-size="8.5" fill="#7A3E1D" letter-spacing="0.5">SHOP</text>
+                            <!-- Maneki-Neko Dorado -->
+                            <path d="M42 52 L39 39 L50 46 Z" fill="url(#catGold)" stroke="#5E3A1E" stroke-width="1.5"/>
+                            <path d="M74 52 L77 39 L66 46 Z" fill="url(#catGold)" stroke="#5E3A1E" stroke-width="1.5"/>
+                            <path d="M43 49 L41 42 L48 47 Z" fill="#B8432E"/>
+                            <path d="M73 49 L75 42 L68 47 Z" fill="#B8432E"/>
+                            <ellipse cx="58" cy="57" rx="17" ry="14" fill="url(#catGold)" stroke="#5E3A1E" stroke-width="1.5"/>
+                            <!-- Ojos felices -->
+                            <path d="M47 55 Q51 51 55 55" fill="none" stroke="#3B2313" stroke-width="2" stroke-linecap="round"/>
+                            <path d="M61 55 Q65 51 69 55" fill="none" stroke="#3B2313" stroke-width="2" stroke-linecap="round"/>
+                            <!-- Collar rojo y cascabel -->
+                            <path d="M44 68 Q58 73 72 68" fill="none" stroke="#B8432E" stroke-width="3.5" stroke-linecap="round"/>
+                            <circle cx="58" cy="71" r="3" fill="#FFE082" stroke="#5E3A1E" stroke-width="1"/>
+                            <!-- Cuerpo y pata saludando -->
+                            <path d="M42 71 Q38 92 46 98 L70 98 Q78 92 74 71 Z" fill="url(#catGold)" stroke="#5E3A1E" stroke-width="1.5"/>
+                            <rect x="75" y="50" width="9" height="19" rx="4.5" fill="url(#catGold)" stroke="#5E3A1E" stroke-width="1.5"/>
+                            <!-- Vela encendida en el centro -->
+                            <ellipse cx="58" cy="87" rx="10" ry="8" fill="#FFF3D6" stroke="#5E3A1E" stroke-width="1.2"/>
+                            <path d="M58 76 Q61 81 58 84 Q55 81 58 76 Z" fill="#FF6B00"/>
+                            <!-- Lema inferior -->
+                            <text x="60" y="109" text-anchor="middle" font-family="Inter, sans-serif" font-weight="800" font-size="5.6" fill="#3B2313" letter-spacing="0.4">TECNOLOGÍA • CONFIANZA • CALIDAD</text>
+                        </svg>
+                        <img id="customBrandLogoImg" src="" alt="Logo DVELA SHOP" class="w-full h-full object-cover hidden">
+                    </div>
+                    <div>
+                        <div class="flex items-center gap-2">
+                            <h1 id="brandHeaderName" class="text-lg sm:text-xl font-black tracking-wider uppercase text-brandCream">
+                                DVELA <span class="text-brandGold">SHOP</span>
+                            </h1>
+                            <span class="hidden md:inline-block px-2 py-0.5 rounded-full bg-brandTerracotta/20 border border-brandTerracotta/40 text-brandGoldLight text-[10px] font-bold tracking-wide">
+                                FINANZAS
+                            </span>
+                        </div>
+                        <p id="brandHeaderSlogan" class="text-[10px] sm:text-xs text-amber-200/70 font-mono tracking-tight">
+                            TECNOLOGÍA • CONFIANZA • CALIDAD
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Switcher de Moneda, Hora Perú, Estado Nube y Herramientas -->
+                <div class="flex items-center gap-2 sm:gap-3">
+                    <!-- Hora Exacta Perú -->
+                    <div class="hidden xl:flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-darkBorder bg-darkBg/90 text-amber-200/90 text-xs font-mono">
+                        <i class="fa-regular fa-clock text-brandGold text-xs"></i>
+                        <span id="peruClockDisplay">--/--/---- • --:--:-- PE</span>
+                    </div>
+
+                    <!-- Switcher PEN / EUR -->
+                    <div class="bg-darkBg p-1 rounded-xl border border-darkBorder flex items-center shadow-inner">
+                        <button id="btnCurrencyPEN" onclick="switchCurrency('PEN')" class="px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-bold font-mono transition-all duration-200 flex items-center gap-1.5 bg-brandTerracotta text-white shadow-md">
+                            <span class="text-sm">🇵🇪</span> <span class="hidden sm:inline">Soles</span> (S/)
+                        </button>
+                        <button id="btnCurrencyEUR" onclick="switchCurrency('EUR')" class="px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-bold font-mono transition-all duration-200 flex items-center gap-1.5 text-amber-200/60 hover:text-white">
+                            <span class="text-sm">🇪🇺</span> <span class="hidden sm:inline">Euros</span> (€)
+                        </button>
+                    </div>
+
+                    <!-- Indicador de Sincronización en la Nube -->
+                    <button id="cloudStatusBadge" onclick="openCloudSettingsModal()" class="flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-xl border border-amber-500/30 bg-amber-500/10 text-amber-300 text-xs font-semibold hover:bg-amber-500/20 transition-all cursor-pointer" title="Configurar conexión Firebase / Nube">
+                        <span id="cloudStatusDot" class="w-2 h-2 rounded-full bg-amber-400"></span>
+                        <span id="cloudStatusText" class="font-mono text-[11px]">Modo Local</span>
+                    </button>
+
+                    <!-- Menú de Herramientas -->
+                    <div class="relative">
+                        <button id="settingsBtn" onclick="toggleSettingsMenu(event)" class="w-10 h-10 rounded-xl border border-darkBorder bg-darkBg hover:bg-darkHover flex items-center justify-center text-brandGold transition-all active:scale-95" title="Ajustes de Nube, Marca y Datos">
+                            <i class="fa-solid fa-gear"></i>
+                        </button>
+                        <div id="settingsDropdown" class="absolute right-0 mt-2 w-60 bg-darkCard border border-darkBorder rounded-xl shadow-2xl p-2 hidden z-50">
+                            <button onclick="openCloudSettingsModal(); closeSettingsMenu();" class="w-full text-left px-3 py-2 text-xs text-brandGoldLight hover:bg-darkHover rounded-lg flex items-center gap-2 font-semibold">
+                                <i class="fa-solid fa-cloud text-brandGold"></i> Nube Firebase & Logo Tienda
+                            </button>
+                            <button onclick="forceCloudSyncNow(); closeSettingsMenu();" class="w-full text-left px-3 py-2 text-xs text-emerald-400 hover:bg-darkHover rounded-lg flex items-center gap-2">
+                                <i class="fa-solid fa-arrows-rotate"></i> Sincronizar Ahora con Nube
+                            </button>
+                            <hr class="border-darkBorder my-1">
+                            <button onclick="exportData(); closeSettingsMenu();" class="w-full text-left px-3 py-2 text-xs text-gray-200 hover:bg-darkHover rounded-lg flex items-center gap-2">
+                                <i class="fa-solid fa-download text-accentBlue"></i> Descargar Respaldo (.JSON)
+                            </button>
+                            <label class="w-full text-left px-3 py-2 text-xs text-gray-200 hover:bg-darkHover rounded-lg flex items-center gap-2 cursor-pointer">
+                                <i class="fa-solid fa-upload text-accentGreen"></i> Importar Backup (.JSON)
+                                <input type="file" id="importFileInput" onchange="importData(event); closeSettingsMenu();" class="hidden" accept=".json">
+                            </label>
+                            <hr class="border-darkBorder my-1">
+                            <button onclick="confirmResetData(); closeSettingsMenu();" class="w-full text-left px-3 py-2 text-xs text-accentRed hover:bg-red-950/40 rounded-lg flex items-center gap-2">
+                                <i class="fa-solid fa-trash"></i> Reiniciar Datos
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </header>
+
+        <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+            
+            <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between border-b border-darkBorder/80 pb-4 gap-3">
+                <div>
+                    <h2 class="text-2xl font-black tracking-tight text-brandCream flex items-center gap-2">
+                        Panel Financiero
+                        <span id="currentCurrencyBadge" class="text-xs px-2.5 py-0.5 rounded-md bg-brandTerracotta/20 text-brandGoldLight border border-brandTerracotta/40 font-mono">
+                            Soles (PEN)
+                        </span>
+                    </h2>
+                    <p class="text-xs text-amber-200/70">Control consolidado de ingresos, gastos, cobros y patrimonio de <strong class="text-brandGold">DVELA SHOP</strong>.</p>
+                </div>
+
+                <button onclick="openModalTransaction()" class="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-gradient-to-r from-brandTerracotta to-amber-600 hover:from-red-700 hover:to-amber-500 text-white font-bold text-sm shadow-lg shadow-brandTerracotta/30 border border-brandGold/30 transition-all flex items-center justify-center gap-2 active:scale-95">
+                    <i class="fa-solid fa-plus text-xs"></i> Registrar Movimiento
+                </button>
+            </div>
+
+            <!-- KPI Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4">
+                
+                <div class="glass-card rounded-2xl p-4 border-l-4 border-l-accentGreen glow-green transition-all">
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-xs font-semibold text-amber-200/70 uppercase tracking-wider">Ingresos</span>
+                        <div class="w-7 h-7 rounded-lg bg-emerald-500/10 text-accentGreen flex items-center justify-center">
+                            <i class="fa-solid fa-arrow-up text-xs"></i>
+                        </div>
+                    </div>
+                    <div class="text-lg font-bold font-mono text-emerald-400 truncate" id="kpiIncome">S/ 0.00</div>
+                    <p class="text-[10px] text-amber-200/50 mt-1">Entradas totales</p>
+                </div>
+
+                <div class="glass-card rounded-2xl p-4 border-l-4 border-l-accentRed glow-red transition-all">
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-xs font-semibold text-amber-200/70 uppercase tracking-wider">Gastos</span>
+                        <div class="w-7 h-7 rounded-lg bg-red-500/10 text-accentRed flex items-center justify-center">
+                            <i class="fa-solid fa-arrow-down text-xs"></i>
+                        </div>
+                    </div>
+                    <div class="text-lg font-bold font-mono text-red-400 truncate" id="kpiExpense">S/ 0.00</div>
+                    <p class="text-[10px] text-amber-200/50 mt-1">Egresos totales</p>
+                </div>
+
+                <div class="glass-card rounded-2xl p-4 border-l-4 border-l-brandCream transition-all">
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-xs font-semibold text-amber-200/70 uppercase tracking-wider">Caja Libre</span>
+                        <div class="w-7 h-7 rounded-lg bg-amber-100/10 text-brandCream flex items-center justify-center">
+                            <i class="fa-solid fa-vault text-xs"></i>
+                        </div>
+                    </div>
+                    <div class="text-lg font-bold font-mono text-brandCream truncate" id="kpiCashBalance">S/ 0.00</div>
+                    <p class="text-[10px] text-amber-200/50 mt-1">Ingresos − Gastos</p>
+                </div>
+
+                <div class="glass-card rounded-2xl p-4 border-l-4 border-l-accentBlue glow-blue transition-all">
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-xs font-semibold text-amber-200/70 uppercase tracking-wider">Me Deben</span>
+                        <div class="w-7 h-7 rounded-lg bg-blue-500/10 text-accentBlue flex items-center justify-center">
+                            <i class="fa-solid fa-hand-holding-dollar text-xs"></i>
+                        </div>
+                    </div>
+                    <div class="text-lg font-bold font-mono text-blue-400 truncate" id="kpiReceivables">S/ 0.00</div>
+                    <p class="text-[10px] text-amber-200/50 mt-1">Saldos por cobrar</p>
+                </div>
+
+                <div class="glass-card rounded-2xl p-4 border-l-4 border-l-accentAmber glow-amber transition-all">
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-xs font-semibold text-amber-200/70 uppercase tracking-wider">Yo Debo</span>
+                        <div class="w-7 h-7 rounded-lg bg-amber-500/10 text-accentAmber flex items-center justify-center">
+                            <i class="fa-solid fa-file-invoice-dollar text-xs"></i>
+                        </div>
+                    </div>
+                    <div class="text-lg font-bold font-mono text-amber-400 truncate" id="kpiDebts">S/ 0.00</div>
+                    <p class="text-[10px] text-amber-200/50 mt-1">Deudas pendientes</p>
+                </div>
+
+                <div class="glass-card rounded-2xl p-4 border-l-4 border-l-brandGold bg-gradient-to-br from-brandTerracotta/25 to-darkCard glow-gold transition-all shadow-xl">
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-xs font-bold text-brandGoldLight uppercase tracking-wider">Patrimonio Neto</span>
+                        <div class="w-7 h-7 rounded-lg bg-brandGold/20 text-brandGold flex items-center justify-center">
+                            <i class="fa-solid fa-coins text-xs"></i>
+                        </div>
+                    </div>
+                    <div class="text-lg font-extrabold font-mono text-brandGoldLight truncate" id="kpiNetWorth">S/ 0.00</div>
+                    <p class="text-[10px] text-amber-200/60 mt-1">Caja Libre − Deudas</p>
+                </div>
+
+            </div>
+
+            <section class="glass-card rounded-2xl p-6 space-y-6">
+                
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-darkBorder pb-4">
+                    <div>
+                        <h3 class="text-lg font-bold text-brandCream flex items-center gap-2">
+                            <i class="fa-solid fa-chart-pie text-brandGold"></i>
+                            Análisis & Estadísticas
+                        </h3>
+                        <p class="text-xs text-amber-200/60">Selecciona el rango temporal para evaluar tus finanzas.</p>
+                    </div>
+
+                    <div class="flex flex-wrap items-center gap-2">
+                        <div class="bg-darkBg p-1 rounded-xl border border-darkBorder flex items-center text-xs font-medium">
+                            <button id="btnPeriodDay" onclick="setPeriodMode('day')" class="px-3 py-1.5 rounded-lg transition-all text-amber-200/60 hover:text-white">Día</button>
+                            <button id="btnPeriodMonth" onclick="setPeriodMode('month')" class="px-3 py-1.5 rounded-lg transition-all bg-brandTerracotta text-white shadow-sm font-semibold">Mes</button>
+                            <button id="btnPeriodYear" onclick="setPeriodMode('year')" class="px-3 py-1.5 rounded-lg transition-all text-amber-200/60 hover:text-white">Año</button>
+                            <button id="btnPeriodAll" onclick="setPeriodMode('all')" class="px-3 py-1.5 rounded-lg transition-all text-amber-200/60 hover:text-white">Histórico</button>
+                        </div>
+
+                        <div id="dateSelectorContainer" class="flex items-center gap-2">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <div class="lg:col-span-2 bg-darkBg/60 border border-darkBorder p-4 rounded-xl flex flex-col justify-between">
+                        <div class="flex items-center justify-between mb-4">
+                            <h4 class="text-xs font-bold text-brandCream uppercase tracking-wider flex items-center gap-2">
+                                <i class="fa-solid fa-chart-column text-accentGreen"></i> Ingresos vs. Gastos
+                            </h4>
+                            <span class="text-[11px] font-mono text-amber-200/50" id="barChartSubtitle">Vista Temporal</span>
+                        </div>
+                        <div class="relative w-full h-64">
+                            <canvas id="barChartIncomeExpense"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="bg-darkBg/60 border border-darkBorder p-4 rounded-xl flex flex-col justify-between">
+                        <div class="flex items-center justify-between mb-4">
+                            <h4 class="text-xs font-bold text-brandCream uppercase tracking-wider flex items-center gap-2">
+                                <i class="fa-solid fa-chart-pie text-brandTerracotta"></i> Distribución de Gastos
+                            </h4>
+                            <span class="text-[11px] font-mono text-amber-200/50">Por Etiqueta (#Tag)</span>
+                        </div>
+                        <div class="relative w-full h-64 flex items-center justify-center">
+                            <canvas id="doughnutChartCategories"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+            </section>
+
+            <section class="glass-card rounded-2xl p-6 space-y-6">
+                
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-darkBorder pb-4">
+                    
+                    <div class="flex items-center gap-2 overflow-x-auto pb-2 sm:pb-0 scrollbar-none">
+                        <button id="tabAll" onclick="setListFilter('all')" class="px-4 py-2 rounded-xl text-xs font-bold transition-all bg-brandTerracotta text-white shadow-md whitespace-nowrap">
+                            Todos los Registros
+                        </button>
+                        <button id="tabIncome" onclick="setListFilter('income')" class="px-4 py-2 rounded-xl text-xs font-bold transition-all text-amber-200/60 hover:text-white hover:bg-darkHover whitespace-nowrap">
+                            <i class="fa-solid fa-circle text-[8px] text-accentGreen mr-1"></i> Ingresos
+                        </button>
+                        <button id="tabExpense" onclick="setListFilter('expense')" class="px-4 py-2 rounded-xl text-xs font-bold transition-all text-amber-200/60 hover:text-white hover:bg-darkHover whitespace-nowrap">
+                            <i class="fa-solid fa-circle text-[8px] text-accentRed mr-1"></i> Gastos
+                        </button>
+                        <button id="tabReceivables" onclick="setListFilter('receivable')" class="px-4 py-2 rounded-xl text-xs font-bold transition-all text-amber-200/60 hover:text-white hover:bg-darkHover whitespace-nowrap">
+                            <i class="fa-solid fa-circle text-[8px] text-accentBlue mr-1"></i> Lo que me deben
+                        </button>
+                        <button id="tabDebts" onclick="setListFilter('debt')" class="px-4 py-2 rounded-xl text-xs font-bold transition-all text-amber-200/60 hover:text-white hover:bg-darkHover whitespace-nowrap">
+                            <i class="fa-solid fa-circle text-[8px] text-accentAmber mr-1"></i> Mis Deudas
+                        </button>
+                    </div>
+
+                    <div class="flex items-center gap-2">
+                        <div class="relative flex-1 sm:w-48">
+                            <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-amber-200/40 text-xs"></i>
+                            <input type="text" id="searchInput" oninput="renderTransactionsList()" placeholder="Buscar..." class="w-full bg-darkBg border border-darkBorder rounded-xl pl-8 pr-3 py-1.5 text-xs text-brandCream focus:outline-none focus:border-brandGold font-medium">
+                        </div>
+
+                        <select id="tagFilterSelect" onchange="renderTransactionsList()" class="bg-darkBg border border-darkBorder rounded-xl px-3 py-1.5 text-xs text-brandCream focus:outline-none focus:border-brandGold">
+                            <option value="all">Todas las Etiquetas</option>
+                        </select>
+                    </div>
+
+                </div>
+
+                <div class="overflow-x-auto rounded-xl border border-darkBorder bg-darkBg/40">
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr class="border-b border-darkBorder bg-darkBg/90 text-[11px] font-bold text-brandGold uppercase tracking-wider font-mono">
+                                <th class="p-4">Fecha</th>
+                                <th class="p-4">Tipo</th>
+                                <th class="p-4">Descripción / Sujeto</th>
+                                <th class="p-4">Etiqueta</th>
+                                <th class="p-4 text-right">Saldo Pendiente / Monto</th>
+                                <th class="p-4 text-center">Opciones de Pago</th>
+                                <th class="p-4 text-center">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="transactionsTableBody" class="divide-y divide-darkBorder text-xs text-brandCream font-medium">
+                        </tbody>
+                    </table>
+                    <div id="emptyState" class="hidden p-8 text-center text-amber-200/50">
+                        <i class="fa-solid fa-folder-open text-3xl mb-2 block text-brandGold/50"></i>
+                        No se encontraron registros para los filtros seleccionados.
+                    </div>
+                </div>
+
+            </section>
+
+        </main>
+    </div>
+
+    <footer class="border-t border-darkBorder py-6 bg-darkCard/70 mt-12 text-center text-xs text-amber-200/60">
+        <p class="font-semibold text-brandCream">DVELA SHOP &copy; 2026 • <span class="text-brandGold">TECNOLOGÍA • CONFIANZA • CALIDAD</span></p>
+        <p class="text-[11px] mt-1 text-amber-200/40">Control Financiero Táctico en Soles (S/) y Euros (€) sincronizado en la nube</p>
+    </footer>
+
+    <!-- Toast Notificación -->
+    <div id="toastNotification" class="fixed bottom-5 right-5 bg-darkCard border border-brandGold/50 text-brandCream text-xs font-semibold px-4 py-3 rounded-xl shadow-2xl flex items-center gap-3 transition-all duration-300 translate-y-20 opacity-0 z-50">
+        <div class="w-7 h-7 rounded-lg bg-brandGold/20 flex items-center justify-center text-brandGold">
+            <i id="toastIcon" class="fa-solid fa-circle-check text-sm"></i>
+        </div>
+        <div>
+            <p class="text-brandCream font-bold text-xs" id="toastTitle">Sincronizado</p>
+            <p class="text-[10px] text-amber-200/70 font-mono" id="toastSubtitle">Guardado en la nube</p>
+        </div>
+    </div>
+
+    <!-- Modal Configuración de Nube (Firebase) & Marca DVELA SHOP -->
+    <div id="modalCloudSettings" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 modal modal-hidden overflow-y-auto">
+        <div class="bg-darkCard border border-brandGold/40 w-full max-w-lg rounded-2xl shadow-2xl p-6 space-y-5 relative my-8">
+            <div class="flex items-center justify-between border-b border-darkBorder pb-4">
+                <h3 class="text-base font-bold text-brandCream flex items-center gap-2">
+                    <i class="fa-solid fa-cloud text-brandGold"></i>
+                    Nube Firebase & Identidad DVELA SHOP
+                </h3>
+                <button onclick="closeCloudSettingsModal()" class="text-amber-200/60 hover:text-white transition-colors">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+
+            <div class="space-y-4">
+                <!-- Personalización de Marca y Logo -->
+                <div class="bg-darkBg/80 border border-darkBorder rounded-xl p-4 space-y-3">
+                    <h4 class="text-xs font-bold text-brandGold uppercase tracking-wider flex items-center gap-1.5">
+                        <i class="fa-solid fa-store"></i> Personalización de Tienda
+                    </h4>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <div>
+                            <label class="block text-[11px] font-semibold text-amber-200/70 mb-1">Nombre de la Tienda</label>
+                            <input type="text" id="inputStoreName" value="DVELA SHOP" class="w-full bg-darkCard border border-darkBorder rounded-xl px-3 py-2 text-xs text-brandCream font-bold focus:outline-none focus:border-brandGold">
+                        </div>
+                        <div>
+                            <label class="block text-[11px] font-semibold text-amber-200/70 mb-1">Lema / Eslogan</label>
+                            <input type="text" id="inputStoreSlogan" value="TECNOLOGÍA • CONFIANZA • CALIDAD" class="w-full bg-darkCard border border-darkBorder rounded-xl px-3 py-2 text-xs text-brandCream focus:outline-none focus:border-brandGold">
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-between gap-3 pt-1">
+                        <label class="flex-1 cursor-pointer px-3 py-2 rounded-xl border border-dashed border-brandGold/50 bg-brandGold/5 hover:bg-brandGold/15 text-xs text-brandGoldLight font-semibold flex items-center justify-center gap-2 transition-all">
+                            <i class="fa-solid fa-image"></i> Subir Foto Exacta del Logo
+                            <input type="file" id="inputCustomLogoFile" accept="image/*" onchange="handleLogoUpload(event)" class="hidden">
+                        </label>
+                        <button type="button" onclick="resetDefaultLogo()" class="px-3 py-2 rounded-xl border border-darkBorder bg-darkCard hover:bg-darkHover text-[11px] text-amber-200/70">
+                            Usar Emblema
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Conexión Firebase -->
+                <div class="bg-darkBg/80 border border-darkBorder rounded-xl p-4 space-y-3">
+                    <div class="flex items-center justify-between">
+                        <h4 class="text-xs font-bold text-brandGold uppercase tracking-wider flex items-center gap-1.5">
+                            <i class="fa-solid fa-database"></i> Sincronización Nube (Firebase)
+                        </h4>
+                        <span id="modalCloudPill" class="text-[10px] font-mono px-2 py-0.5 rounded bg-amber-500/20 text-amber-300">Desconectado</span>
+                    </div>
+
+                    <div>
+                        <label class="block text-[11px] font-semibold text-amber-200/70 mb-1">Código de Espacio / Tienda (Debe ser igual en PC y Celular)</label>
+                        <input type="text" id="inputFinanceSpaceId" value="DVELA_FINANZAS_01" placeholder="Ej: DVELA_FINANZAS_01" class="w-full bg-darkCard border border-darkBorder rounded-xl px-3 py-2 text-xs text-brandCream font-mono font-bold uppercase focus:outline-none focus:border-brandGold">
+                    </div>
+
+                    <div>
+                        <div class="flex items-center justify-between mb-1">
+                            <label class="block text-[11px] font-semibold text-amber-200/70">Credenciales Firebase (firebaseConfig JSON)</label>
+                            <button type="button" onclick="fillPresetTallerPeruConfig()" class="text-[10px] text-brandGold hover:underline font-semibold">
+                                + Cargar config tallerperu-bd8c7
+                            </button>
+                        </div>
+                        <textarea id="inputFirebaseConfig" rows="5" placeholder='{"apiKey": "...", "authDomain": "...", "projectId": "..."}' class="w-full bg-darkCard border border-darkBorder rounded-xl p-2.5 text-[11px] text-emerald-300 font-mono focus:outline-none focus:border-brandGold"></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pt-3 flex items-center justify-end gap-3 border-t border-darkBorder">
+                <button type="button" onclick="closeCloudSettingsModal()" class="px-4 py-2 rounded-xl text-xs font-bold text-amber-200/70 hover:bg-darkHover transition-colors">
+                    Cerrar
+                </button>
+                <button type="button" onclick="saveCloudAndBrandSettings()" class="px-5 py-2 rounded-xl bg-gradient-to-r from-brandTerracotta to-amber-600 hover:from-red-700 hover:to-amber-500 text-white font-bold text-xs shadow-lg transition-all">
+                    Guardar y Conectar Nube
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Registro Nueva Transacción -->
+    <div id="modalTransaction" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 modal modal-hidden">
+        <div class="bg-darkCard border border-darkBorder w-full max-w-lg rounded-2xl shadow-2xl p-6 space-y-6 relative">
+            <div class="flex items-center justify-between border-b border-darkBorder pb-4">
+                <h3 class="text-base font-bold text-brandCream flex items-center gap-2">
+                    <i class="fa-solid fa-pen-to-square text-brandGold"></i>
+                    Nuevo Registro Financiero
+                </h3>
+                <button onclick="closeModalTransaction()" class="text-amber-200/60 hover:text-white transition-colors">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+
+            <form id="transactionForm" onsubmit="handleFormSubmit(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-semibold text-amber-200/70 uppercase tracking-wider mb-2">Tipo de Operación</label>
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                        <label class="cursor-pointer">
+                            <input type="radio" name="txType" value="income" class="peer hidden" checked onchange="updateFormFields()">
+                            <div class="p-2.5 rounded-xl border border-darkBorder bg-darkBg text-center peer-checked:border-accentGreen peer-checked:bg-emerald-500/15 peer-checked:text-accentGreen text-xs font-bold transition-all">
+                                <i class="fa-solid fa-arrow-up text-xs block mb-1"></i> Ingreso
+                            </div>
+                        </label>
+
+                        <label class="cursor-pointer">
+                            <input type="radio" name="txType" value="expense" class="peer hidden" onchange="updateFormFields()">
+                            <div class="p-2.5 rounded-xl border border-darkBorder bg-darkBg text-center peer-checked:border-accentRed peer-checked:bg-red-500/15 peer-checked:text-accentRed text-xs font-bold transition-all">
+                                <i class="fa-solid fa-arrow-down text-xs block mb-1"></i> Gasto
+                            </div>
+                        </label>
+
+                        <label class="cursor-pointer">
+                            <input type="radio" name="txType" value="receivable" class="peer hidden" onchange="updateFormFields()">
+                            <div class="p-2.5 rounded-xl border border-darkBorder bg-darkBg text-center peer-checked:border-accentBlue peer-checked:bg-blue-500/15 peer-checked:text-accentBlue text-xs font-bold transition-all">
+                                <i class="fa-solid fa-hand-holding-dollar text-xs block mb-1"></i> Me Deben
+                            </div>
+                        </label>
+
+                        <label class="cursor-pointer">
+                            <input type="radio" name="txType" value="debt" class="peer hidden" onchange="updateFormFields()">
+                            <div class="p-2.5 rounded-xl border border-darkBorder bg-darkBg text-center peer-checked:border-accentAmber peer-checked:bg-amber-500/15 peer-checked:text-accentAmber text-xs font-bold transition-all">
+                                <i class="fa-solid fa-file-invoice-dollar text-xs block mb-1"></i> Yo Debo
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-semibold text-amber-200/70 mb-1">Monto (<span class="formCurrencySymbol font-mono text-brandGold">S/</span>)</label>
+                        <input type="number" step="0.01" min="0.01" id="txAmount" required placeholder="0.00" class="w-full bg-darkBg border border-darkBorder rounded-xl px-3 py-2 text-sm text-brandCream font-mono font-bold focus:outline-none focus:border-brandGold">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-amber-200/70 mb-1">Fecha</label>
+                        <input type="date" id="txDate" required class="w-full bg-darkBg border border-darkBorder rounded-xl px-3 py-2 text-xs text-brandCream focus:outline-none focus:border-brandGold">
+                    </div>
+                </div>
+
+                <div id="subjectContainer">
+                    <label id="subjectLabel" class="block text-xs font-semibold text-amber-200/70 mb-1">Descripción / Detalle</label>
+                    <input type="text" id="txDescription" required placeholder="Ej: Venta accesorio, Reparación, Insumos..." class="w-full bg-darkBg border border-darkBorder rounded-xl px-3 py-2 text-xs text-brandCream focus:outline-none focus:border-brandGold">
+                </div>
+
+                <div>
+                    <div class="flex items-center justify-between mb-1">
+                        <label class="block text-xs font-semibold text-amber-200/70">Etiqueta / Categoría</label>
+                        <button type="button" onclick="promptNewTag()" class="text-[11px] text-brandGold hover:underline">+ Crear Nueva</button>
+                    </div>
+                    <select id="txTagSelect" class="w-full bg-darkBg border border-darkBorder rounded-xl px-3 py-2 text-xs text-brandCream focus:outline-none focus:border-brandGold">
+                    </select>
+                </div>
+
+                <div class="pt-4 flex items-center justify-end gap-3 border-t border-darkBorder">
+                    <button type="button" onclick="closeModalTransaction()" class="px-4 py-2 rounded-xl text-xs font-bold text-amber-200/60 hover:bg-darkHover transition-colors">
+                        Cancelar
+                    </button>
+                    <button type="submit" class="px-5 py-2 rounded-xl bg-brandTerracotta hover:bg-red-700 text-white font-bold text-xs shadow-lg transition-all">
+                        Guardar Registro
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal Pago Parcial -->
+    <div id="modalPartialPayment" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 modal modal-hidden">
+        <div class="bg-darkCard border border-darkBorder w-full max-w-md rounded-2xl shadow-2xl p-6 space-y-4">
+            <div class="flex items-center justify-between border-b border-darkBorder pb-3">
+                <h3 id="modalPartialTitle" class="text-sm font-bold text-brandCream flex items-center gap-2">
+                    <i class="fa-solid fa-coins text-brandGold"></i>
+                    Abono Parcial
+                </h3>
+                <button onclick="closeModalPartial()" class="text-amber-200/60 hover:text-white">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+
+            <p id="modalPartialInfo" class="text-xs text-amber-200/70">
+                Monto pendiente actual: <span id="modalPartialPendingAmount" class="font-mono font-bold text-brandGoldLight">S/ 0.00</span>
+            </p>
+
+            <form id="partialForm" onsubmit="handlePartialFormSubmit(event)" class="space-y-4">
+                <div>
+                    <label id="partialAmountLabel" class="block text-xs font-semibold text-amber-200/70 mb-1">Monto Abonado</label>
+                    <input type="number" step="0.01" min="0.01" id="partialAmount" required placeholder="0.00" class="w-full bg-darkBg border border-darkBorder rounded-xl px-3 py-2 text-sm text-brandCream font-mono font-bold focus:outline-none focus:border-brandGold">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold text-amber-200/70 mb-1">Fecha del Abono</label>
+                    <input type="date" id="partialDate" required class="w-full bg-darkBg border border-darkBorder rounded-xl px-3 py-2 text-xs text-brandCream focus:outline-none focus:border-brandGold">
+                </div>
+
+                <div class="pt-3 flex items-center justify-end gap-3 border-t border-darkBorder">
+                    <button type="button" onclick="closeModalPartial()" class="px-4 py-2 rounded-xl text-xs font-bold text-amber-200/60 hover:bg-darkHover transition-colors">
+                        Cancelar
+                    </button>
+                    <button type="submit" class="px-5 py-2 rounded-xl bg-accentGreen hover:bg-emerald-600 text-white font-bold text-xs shadow-lg transition-all">
+                        Confirmar Abono
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Script Principal con Sincronización Firebase Firestore + Respaldo Local -->
+    <script type="module">
+        import { initializeApp, getApps, deleteApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        const STORAGE_KEY = 'ApexFinance_Data_v1';
+        const CLOUD_CFG_KEY = 'DvelaFinance_CloudCfg_v1';
+        const BRAND_CFG_KEY = 'DvelaFinance_BrandCfg_v1';
+
+        const PRESET_FIREBASE_CONFIG = {
+            apiKey: "AIzaSyCWbmkEWub3hO_yYLhlszNTD2vF3ScjdBA",
+            authDomain: "tallerperu-bd8c7.firebaseapp.com",
+            projectId: "tallerperu-bd8c7",
+            storageBucket: "tallerperu-bd8c7.firebasestorage.app",
+            messagingSenderId: "503474449188",
+            appId: "1:503474449188:web:ec16f993f04bc495b121b1",
+            measurementId: "G-J7E785CQGJ"
+        };
+
+        let appState = {
+            currentCurrency: 'PEN',
+            tags: ['#Personal', '#Negocio', '#Taller', '#Vehiculo', '#Hogar', '#Alimentacion', '#Servicios'],
+            transactions: {
+                PEN: [],
+                EUR: []
+            },
+            updatedAt: 0
+        };
+
+        let brandConfig = {
+            name: 'DVELA SHOP',
+            slogan: 'TECNOLOGÍA • CONFIANZA • CALIDAD',
+            logoDataUrl: ''
+        };
+
+        let cloudConfig = {
+            spaceId: 'DVELA_FINANZAS_01',
+            firebaseConfig: PRESET_FIREBASE_CONFIG
+        };
+
+        let firebaseApp = null;
+        let firebaseAuth = null;
+        let firestoreDb = null;
+        let currentUser = null;
+        let unsubscribeSnapshot = null;
+        let isApplyingRemoteUpdate = false;
+
+        let currentPeriodMode = 'month';
+        let selectedDateValue = getPeruDateISO().substring(0, 7);
+        let currentListFilter = 'all';
+
+        let activePartialTargetId = null;
+        let activePartialType = null;
+
+        let chartBarInstance = null;
+        let chartDoughnutInstance = null;
+
+        function getPeruDateISO() {
+            const now = new Date();
+            const parts = new Intl.DateTimeFormat('en-CA', {
+                timeZone: 'America/Lima',
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit'
+            }).formatToParts(now);
+            const y = parts.find(p => p.type === 'year').value;
+            const m = parts.find(p => p.type === 'month').value;
+            const d = parts.find(p => p.type === 'day').value;
+            return `${y}-${m}-${d}`;
+        }
+
+        function startPeruClock() {
+            const el = document.getElementById('peruClockDisplay');
+            if (!el) return;
+            const update = () => {
+                const now = new Date();
+                const dateStr = new Intl.DateTimeFormat('es-PE', {
+                    timeZone: 'America/Lima',
+                    day: '2-digit',
+                    month: '2-digit',
+                    year: 'numeric'
+                }).format(now);
+                const timeStr = new Intl.DateTimeFormat('es-PE', {
+                    timeZone: 'America/Lima',
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    second: '2-digit',
+                    hour12: false
+                }).format(now);
+                el.innerText = `${dateStr} • ${timeStr} PE`;
+            };
+            update();
+            setInterval(update, 1000);
+        }
+
+        window.addEventListener('DOMContentLoaded', async () => {
+            startPeruClock();
+            loadBrandConfig();
+            loadCloudConfig();
+            loadDataFromStorage();
+            setDefaultDates();
+            setupCurrencyUI();
+            updateTagDropdowns();
+            renderAll();
+            await initCloudSync();
+        });
+
+        function loadBrandConfig() {
+            try {
+                const saved = localStorage.getItem(BRAND_CFG_KEY);
+                if (saved) {
+                    brandConfig = { ...brandConfig, ...JSON.parse(saved) };
+                }
+            } catch (e) {}
+            applyBrandUI();
+        }
+
+        function applyBrandUI() {
+            const headerName = document.getElementById('brandHeaderName');
+            const headerSlogan = document.getElementById('brandHeaderSlogan');
+            const svgEl = document.getElementById('defaultDvelaLogo');
+            const imgEl = document.getElementById('customBrandLogoImg');
+
+            const nameParts = (brandConfig.name || 'DVELA SHOP').trim().split(' ');
+            if (nameParts.length > 1) {
+                const first = nameParts[0];
+                const rest = nameParts.slice(1).join(' ');
+                headerName.innerHTML = `${first} <span class="text-brandGold">${rest}</span>`;
+            } else {
+                headerName.innerText = brandConfig.name || 'DVELA SHOP';
+            }
+            document.title = `${brandConfig.name || 'DVELA SHOP'} | Control Financiero`;
+            headerSlogan.innerText = brandConfig.slogan || 'TECNOLOGÍA • CONFIANZA • CALIDAD';
+
+            if (brandConfig.logoDataUrl) {
+                imgEl.src = brandConfig.logoDataUrl;
+                imgEl.classList.remove('hidden');
+                svgEl.classList.add('hidden');
+            } else {
+                imgEl.classList.add('hidden');
+                svgEl.classList.remove('hidden');
+            }
+        }
+
+        function loadCloudConfig() {
+            try {
+                const saved = localStorage.getItem(CLOUD_CFG_KEY);
+                if (saved) {
+                    const parsed = JSON.parse(saved);
+                    cloudConfig = { ...cloudConfig, ...parsed };
+                }
+            } catch (e) {}
+        }
+
+        function updateCloudBadge(status, label) {
+            const badge = document.getElementById('cloudStatusBadge');
+            const dot = document.getElementById('cloudStatusDot');
+            const text = document.getElementById('cloudStatusText');
+            const modalPill = document.getElementById('modalCloudPill');
+
+            text.innerText = label;
+            if (status === 'connected') {
+                badge.className = "flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-xl border border-emerald-500/40 bg-emerald-500/15 text-emerald-300 text-xs font-semibold hover:bg-emerald-500/25 transition-all cursor-pointer";
+                dot.className = "w-2 h-2 rounded-full bg-emerald-400 animate-pulse";
+                if (modalPill) {
+                    modalPill.className = "text-[10px] font-mono px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300";
+                    modalPill.innerText = `Conectado (${cloudConfig.spaceId})`;
+                }
+            } else if (status === 'error') {
+                badge.className = "flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-xl border border-red-500/40 bg-red-500/15 text-red-300 text-xs font-semibold hover:bg-red-500/25 transition-all cursor-pointer";
+                dot.className = "w-2 h-2 rounded-full bg-red-400";
+                if (modalPill) {
+                    modalPill.className = "text-[10px] font-mono px-2 py-0.5 rounded bg-red-500/20 text-red-300";
+                    modalPill.innerText = "Error de conexión";
+                }
+            } else {
+                badge.className = "flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-xl border border-amber-500/30 bg-amber-500/10 text-amber-300 text-xs font-semibold hover:bg-amber-500/20 transition-all cursor-pointer";
+                dot.className = "w-2 h-2 rounded-full bg-amber-400";
+                if (modalPill) {
+                    modalPill.className = "text-[10px] font-mono px-2 py-0.5 rounded bg-amber-500/20 text-amber-300";
+                    modalPill.innerText = "Modo Local";
+                }
+            }
+        }
+
+        async function initCloudSync() {
+            if (!cloudConfig.firebaseConfig || !cloudConfig.firebaseConfig.apiKey || !cloudConfig.spaceId) {
+                updateCloudBadge('local', 'Modo Local');
+                return;
+            }
+
+            try {
+                if (unsubscribeSnapshot) {
+                    unsubscribeSnapshot();
+                    unsubscribeSnapshot = null;
+                }
+                for (const existing of getApps()) {
+                    await deleteApp(existing);
+                }
+
+                firebaseApp = initializeApp(cloudConfig.firebaseConfig);
+                firebaseAuth = getAuth(firebaseApp);
+                firestoreDb = getFirestore(firebaseApp);
+
+                await signInAnonymously(firebaseAuth);
+
+                onAuthStateChanged(firebaseAuth, (user) => {
+                    if (!user) return;
+                    currentUser = user;
+                    const docRef = doc(firestoreDb, 'artifacts', cloudConfig.firebaseConfig.projectId || 'dvela-finance', 'public', 'data', 'finances', cloudConfig.spaceId);
+
+                    unsubscribeSnapshot = onSnapshot(docRef, async (snap) => {
+                        updateCloudBadge('connected', `Nube • ${cloudConfig.spaceId}`);
+                        if (snap.exists()) {
+                            const remoteData = snap.data();
+                            const localCount = (appState.transactions.PEN?.length || 0) + (appState.transactions.EUR?.length || 0);
+                            const remoteCount = (remoteData.transactions?.PEN?.length || 0) + (remoteData.transactions?.EUR?.length || 0);
+
+                            // Si la nube está vacía y hay datos locales previos, subirlos automáticamente
+                            if (remoteCount === 0 && localCount > 0) {
+                                await pushStateToCloud();
+                                return;
+                            }
+
+                            isApplyingRemoteUpdate = true;
+                            appState = {
+                                currentCurrency: remoteData.currentCurrency || appState.currentCurrency || 'PEN',
+                                tags: Array.isArray(remoteData.tags) && remoteData.tags.length ? remoteData.tags : appState.tags,
+                                transactions: {
+                                    PEN: remoteData.transactions?.PEN || [],
+                                    EUR: remoteData.transactions?.EUR || []
+                                },
+                                updatedAt: remoteData.updatedAt || Date.now()
+                            };
+                            if (remoteData.brandConfig && remoteData.brandConfig.logoDataUrl && !brandConfig.logoDataUrl) {
+                                brandConfig = { ...brandConfig, ...remoteData.brandConfig };
+                                localStorage.setItem(BRAND_CFG_KEY, JSON.stringify(brandConfig));
+                                applyBrandUI();
+                            }
+                            localStorage.setItem(STORAGE_KEY, JSON.stringify(appState));
+                            setupCurrencyUI();
+                            updateTagDropdowns();
+                            renderAll();
+                            isApplyingRemoteUpdate = false;
+                        } else {
+                            // Primer inicio en la nube: subir datos locales existentes
+                            await pushStateToCloud();
+                        }
+                    }, (err) => {
+                        console.error("Error Firestore onSnapshot:", err);
+                        updateCloudBadge('error', 'Error de red');
+                    });
+                });
+            } catch (err) {
+                console.error("Error iniciando Firebase:", err);
+                updateCloudBadge('error', 'Error Nube');
+            }
+        }
+
+        async function pushStateToCloud() {
+            if (!firestoreDb || !currentUser || isApplyingRemoteUpdate) return;
+            try {
+                const docRef = doc(firestoreDb, 'artifacts', cloudConfig.firebaseConfig.projectId || 'dvela-finance', 'public', 'data', 'finances', cloudConfig.spaceId);
+                appState.updatedAt = Date.now();
+                const payload = {
+                    ...appState,
+                    brandConfig: {
+                        name: brandConfig.name,
+                        slogan: brandConfig.slogan,
+                        logoDataUrl: brandConfig.logoDataUrl && brandConfig.logoDataUrl.length < 350000 ? brandConfig.logoDataUrl : ''
+                    }
+                };
+                await setDoc(docRef, payload, { merge: true });
+                showToast("Nube Actualizada", `Sincronizado con ${cloudConfig.spaceId}`);
+            } catch (e) {
+                console.error("Error guardando en Firestore:", e);
+                showToast("Guardado Local", "Sin conexión a la nube en este momento", true);
+            }
+        }
+
+        window.forceCloudSyncNow = async function() {
+            await pushStateToCloud();
+        };
+
+        function showToast(title, subtitle, isWarning = false) {
+            const toast = document.getElementById('toastNotification');
+            const titleEl = document.getElementById('toastTitle');
+            const subEl = document.getElementById('toastSubtitle');
+            const iconEl = document.getElementById('toastIcon');
+
+            titleEl.innerText = title;
+            subEl.innerText = subtitle;
+            iconEl.className = isWarning ? "fa-solid fa-triangle-exclamation text-amber-400 text-sm" : "fa-solid fa-cloud-arrow-up text-brandGold text-sm";
+
+            toast.classList.remove('translate-y-20', 'opacity-0');
+            setTimeout(() => {
+                toast.classList.add('translate-y-20', 'opacity-0');
+            }, 2600);
+        }
+
+        /* ==========================================================================
+           MODALES DE CONFIGURACIÓN DE NUBE Y MARCA
+           ========================================================================== */
+        window.openCloudSettingsModal = function() {
+            document.getElementById('inputStoreName').value = brandConfig.name || 'DVELA SHOP';
+            document.getElementById('inputStoreSlogan').value = brandConfig.slogan || 'TECNOLOGÍA • CONFIANZA • CALIDAD';
+            document.getElementById('inputFinanceSpaceId').value = cloudConfig.spaceId || 'DVELA_FINANZAS_01';
+            document.getElementById('inputFirebaseConfig').value = cloudConfig.firebaseConfig ? JSON.stringify(cloudConfig.firebaseConfig, null, 2) : '';
+            document.getElementById('modalCloudSettings').classList.remove('modal-hidden');
+        };
+
+        window.closeCloudSettingsModal = function() {
+            document.getElementById('modalCloudSettings').classList.add('modal-hidden');
+        };
+
+        window.fillPresetTallerPeruConfig = function() {
+            document.getElementById('inputFirebaseConfig').value = JSON.stringify(PRESET_FIREBASE_CONFIG, null, 2);
+        };
+
+        window.handleLogoUpload = function(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const img = new Image();
+                img.onload = function() {
+                    const canvas = document.createElement('canvas');
+                    const maxDim = 240;
+                    let w = img.width, h = img.height;
+                    if (w > h) {
+                        if (w > maxDim) { h = Math.round(h * maxDim / w); w = maxDim; }
+                    } else {
+                        if (h > maxDim) { w = Math.round(w * maxDim / h); h = maxDim; }
+                    }
+                    canvas.width = w;
+                    canvas.height = h;
+                    const ctx = canvas.getContext('2d');
+                    ctx.drawImage(img, 0, 0, w, h);
+                    brandConfig.logoDataUrl = canvas.toDataURL('image/jpeg', 0.85);
+                    localStorage.setItem(BRAND_CFG_KEY, JSON.stringify(brandConfig));
+                    applyBrandUI();
+                    showToast("Logo Actualizado", "Imagen cargada en DVELA SHOP");
+                };
+                img.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        };
+
+        window.resetDefaultLogo = function() {
+            brandConfig.logoDataUrl = '';
+            localStorage.setItem(BRAND_CFG_KEY, JSON.stringify(brandConfig));
+            applyBrandUI();
+            showToast("Emblema Restaurado", "Se activó el medallón DVELA SHOP");
+        };
+
+        window.saveCloudAndBrandSettings = async function() {
+            const newName = document.getElementById('inputStoreName').value.trim() || 'DVELA SHOP';
+            const newSlogan = document.getElementById('inputStoreSlogan').value.trim() || 'TECNOLOGÍA • CONFIANZA • CALIDAD';
+            const newSpaceId = document.getElementById('inputFinanceSpaceId').value.trim().toUpperCase().replace(/[^A-Z0-9_-]/g, '') || 'DVELA_FINANZAS_01';
+            const rawJson = document.getElementById('inputFirebaseConfig').value.trim();
+
+            brandConfig.name = newName;
+            brandConfig.slogan = newSlogan;
+            localStorage.setItem(BRAND_CFG_KEY, JSON.stringify(brandConfig));
+            applyBrandUI();
+
+            let parsedCfg = null;
+            if (rawJson) {
+                try {
+                    const cleaned = rawJson.replace(/^const\s+firebaseConfig\s*=\s*/, '').replace(/;$/, '');
+                    parsedCfg = JSON.parse(cleaned);
+                } catch (e) {
+                    alert("El JSON de Firebase no tiene un formato válido. Asegúrate de copiar solo desde { hasta }.");
+                    return;
+                }
+            }
+
+            cloudConfig.spaceId = newSpaceId;
+            cloudConfig.firebaseConfig = parsedCfg;
+            localStorage.setItem(CLOUD_CFG_KEY, JSON.stringify(cloudConfig));
+
+            closeCloudSettingsModal();
+            await initCloudSync();
+            await pushStateToCloud();
+        };
+
+        /* ==========================================================================
+           MENÚ Y ALMACENAMIENTO
+           ========================================================================== */
+        window.toggleSettingsMenu = function(event) {
+            if (event) event.stopPropagation();
+            const dropdown = document.getElementById('settingsDropdown');
+            if (dropdown) dropdown.classList.toggle('hidden');
+        };
+
+        window.closeSettingsMenu = function() {
+            const dropdown = document.getElementById('settingsDropdown');
+            if (dropdown) dropdown.classList.add('hidden');
+        };
+
+        document.addEventListener('click', function(event) {
+            const dropdown = document.getElementById('settingsDropdown');
+            const btn = document.getElementById('settingsBtn');
+            if (dropdown && !dropdown.classList.contains('hidden')) {
+                if (btn && !btn.contains(event.target) && !dropdown.contains(event.target)) {
+                    dropdown.classList.add('hidden');
+                }
+            }
+        });
+
+        function loadDataFromStorage() {
+            try {
+                const stored = localStorage.getItem(STORAGE_KEY);
+                if (stored) {
+                    const parsed = JSON.parse(stored);
+                    appState = { ...appState, ...parsed };
+                }
+            } catch (e) {
+                console.error("Error al cargar datos desde LocalStorage:", e);
+            }
+        }
+
+        function saveDataToStorage() {
+            try {
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(appState));
+                pushStateToCloud();
+            } catch (e) {
+                console.error("Error al guardar:", e);
+            }
+        }
+
+        function downloadBackupFile() {
+            try {
+                const dateStr = getPeruDateISO();
+                const filename = `DVELA_SHOP_Finanzas_${dateStr}.json`;
+                const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(appState, null, 2));
+                const downloadAnchor = document.createElement('a');
+                downloadAnchor.setAttribute("href", dataStr);
+                downloadAnchor.setAttribute("download", filename);
+                document.body.appendChild(downloadAnchor);
+                downloadAnchor.click();
+                downloadAnchor.remove();
+            } catch (e) {
+                console.error("Error al exportar respaldo:", e);
+            }
+        }
+
+        function updateDateSelectorUI() {
+            const container = document.getElementById('dateSelectorContainer');
+            if (!container) return;
+
+            if (currentPeriodMode === 'all') {
+                container.innerHTML = '';
+                return;
+            }
+
+            if (currentPeriodMode === 'day') {
+                container.innerHTML = `
+                    <input type="date" id="dateInputFilter" value="${selectedDateValue}" onchange="onDateFilterChange(this.value)" class="bg-darkBg border border-darkBorder rounded-xl px-3 py-1 text-xs text-brandCream focus:outline-none focus:border-brandGold font-mono">
+                `;
+            } else if (currentPeriodMode === 'month') {
+                container.innerHTML = `
+                    <input type="month" id="monthInputFilter" value="${selectedDateValue}" onchange="onDateFilterChange(this.value)" class="bg-darkBg border border-darkBorder rounded-xl px-3 py-1 text-xs text-brandCream focus:outline-none focus:border-brandGold font-mono">
+                `;
+            } else if (currentPeriodMode === 'year') {
+                const currentY = parseInt(selectedDateValue) || parseInt(getPeruDateISO().substring(0, 4));
+                let optionsHtml = '';
+                const startY = currentY - 5;
+                const endY = currentY + 5;
+                for (let y = startY; y <= endY; y++) {
+                    optionsHtml += `<option value="${y}" ${y === currentY ? 'selected' : ''}>${y}</option>`;
+                }
+                container.innerHTML = `
+                    <select id="yearInputFilter" onchange="onDateFilterChange(this.value)" class="bg-darkBg border border-darkBorder rounded-xl px-3 py-1 text-xs text-brandCream focus:outline-none focus:border-brandGold font-mono">
+                        ${optionsHtml}
+                    </select>
+                `;
+            }
+        }
+
+        function setDefaultDates() {
+            const todayPeru = getPeruDateISO();
+            document.getElementById('txDate').value = todayPeru;
+            document.getElementById('partialDate').value = todayPeru;
+            updateDateSelectorUI();
+        }
+
+        window.switchCurrency = function(currency) {
+            if (appState.currentCurrency === currency) return;
+            appState.currentCurrency = currency;
+            saveDataToStorage();
+            setupCurrencyUI();
+            renderAll();
+        };
+
+        function setupCurrencyUI() {
+            const isPEN = appState.currentCurrency === 'PEN';
+            const btnPEN = document.getElementById('btnCurrencyPEN');
+            const btnEUR = document.getElementById('btnCurrencyEUR');
+            const badge = document.getElementById('currentCurrencyBadge');
+
+            if (isPEN) {
+                btnPEN.className = "px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-bold font-mono transition-all duration-200 flex items-center gap-1.5 bg-brandTerracotta text-white shadow-md";
+                btnEUR.className = "px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-bold font-mono transition-all duration-200 flex items-center gap-1.5 text-amber-200/60 hover:text-white";
+                badge.innerText = "Soles (PEN)";
+                badge.className = "text-xs px-2.5 py-0.5 rounded-md bg-brandTerracotta/20 text-brandGoldLight border border-brandTerracotta/40 font-mono";
+            } else {
+                btnEUR.className = "px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-bold font-mono transition-all duration-200 flex items-center gap-1.5 bg-brandTerracotta text-white shadow-md";
+                btnPEN.className = "px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-bold font-mono transition-all duration-200 flex items-center gap-1.5 text-amber-200/60 hover:text-white";
+                badge.innerText = "Euros (EUR)";
+                badge.className = "text-xs px-2.5 py-0.5 rounded-md bg-emerald-500/15 text-accentGreen border border-emerald-500/30 font-mono";
+            }
+
+            const symbols = document.querySelectorAll('.formCurrencySymbol');
+            symbols.forEach(s => s.innerText = isPEN ? 'S/' : '€');
+        }
+
+        function getSymbol() {
+            return appState.currentCurrency === 'PEN' ? 'S/' : '€';
+        }
+
+        function formatMoney(amount) {
+            const symbol = getSymbol();
+            return `${symbol} ${parseFloat(amount || 0).toLocaleString('es-PE', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+        }
+
+        function renderAll() {
+            const currentList = appState.transactions[appState.currentCurrency] || [];
+            const filteredList = filterByPeriod(currentList);
+            
+            let totalIncome = 0;
+            let totalExpense = 0;
+            let totalReceivables = 0;
+            let totalDebts = 0;
+
+            filteredList.forEach(item => {
+                if (item.type === 'income') {
+                    totalIncome += item.amount;
+                } else if (item.type === 'expense') {
+                    totalExpense += item.amount;
+                } else if (item.type === 'receivable' && item.status === 'pending') {
+                    totalReceivables += (item.pendingAmount !== undefined ? item.pendingAmount : item.amount);
+                } else if (item.type === 'debt' && item.status === 'pending') {
+                    totalDebts += (item.pendingAmount !== undefined ? item.pendingAmount : item.amount);
+                }
+            });
+
+            const cashBalance = totalIncome - totalExpense;
+            const netWorth = cashBalance - totalDebts;
+
+            document.getElementById('kpiIncome').innerText = formatMoney(totalIncome);
+            document.getElementById('kpiExpense').innerText = formatMoney(totalExpense);
+            document.getElementById('kpiCashBalance').innerText = formatMoney(cashBalance);
+            document.getElementById('kpiReceivables').innerText = formatMoney(totalReceivables);
+            document.getElementById('kpiDebts').innerText = formatMoney(totalDebts);
+            
+            const netWorthEl = document.getElementById('kpiNetWorth');
+            netWorthEl.innerText = formatMoney(netWorth);
+            if (netWorth < 0) {
+                netWorthEl.className = "text-lg font-extrabold font-mono text-red-400 truncate";
+            } else {
+                netWorthEl.className = "text-lg font-extrabold font-mono text-brandGoldLight truncate";
+            }
+
+            renderCharts();
+            renderTransactionsList();
+        }
+
+        window.setPeriodMode = function(mode) {
+            currentPeriodMode = mode;
+            
+            const modes = ['day', 'month', 'year', 'all'];
+            modes.forEach(m => {
+                const btn = document.getElementById(`btnPeriod${m.charAt(0).toUpperCase() + m.slice(1)}`);
+                if (btn) {
+                    if (m === mode) {
+                        btn.className = "px-3 py-1.5 rounded-lg transition-all bg-brandTerracotta text-white shadow-sm font-semibold";
+                    } else {
+                        btn.className = "px-3 py-1.5 rounded-lg transition-all text-amber-200/60 hover:text-white";
+                    }
+                }
+            });
+
+            const todayPeru = getPeruDateISO();
+            if (mode === 'day') {
+                selectedDateValue = todayPeru;
+            } else if (mode === 'month') {
+                selectedDateValue = todayPeru.substring(0, 7);
+            } else if (mode === 'year') {
+                selectedDateValue = todayPeru.substring(0, 4);
+            }
+
+            updateDateSelectorUI();
+            renderAll();
+        };
+
+        window.onDateFilterChange = function(val) {
+            selectedDateValue = val;
+            renderAll();
+        };
+
+        function filterByPeriod(transactions) {
+            if (currentPeriodMode === 'all') return transactions;
+
+            return transactions.filter(item => {
+                if (!item.date) return false;
+                if (currentPeriodMode === 'day') {
+                    return item.date === selectedDateValue;
+                } else if (currentPeriodMode === 'month') {
+                    return item.date.startsWith(selectedDateValue);
+                } else if (currentPeriodMode === 'year') {
+                    return item.date.startsWith(selectedDateValue);
+                }
+                return true;
+            });
+        }
+
+        function renderCharts() {
+            const currentList = appState.transactions[appState.currentCurrency] || [];
+            const filteredList = filterByPeriod(currentList);
+
+            document.getElementById('barChartSubtitle').innerText = 
+                currentPeriodMode === 'all' ? 'Histórico General' : `Filtro: ${selectedDateValue}`;
+
+            let incSum = 0;
+            let expSum = 0;
+
+            filteredList.forEach(t => {
+                if (t.type === 'income') incSum += t.amount;
+                if (t.type === 'expense') expSum += t.amount;
+            });
+
+            const ctxBar = document.getElementById('barChartIncomeExpense').getContext('2d');
+            if (chartBarInstance) chartBarInstance.destroy();
+
+            chartBarInstance = new Chart(ctxBar, {
+                type: 'bar',
+                data: {
+                    labels: ['Ingresos', 'Gastos'],
+                    datasets: [{
+                        label: 'Monto Total',
+                        data: [incSum, expSum],
+                        backgroundColor: ['rgba(16, 185, 129, 0.75)', 'rgba(184, 67, 46, 0.85)'],
+                        borderColor: ['#10B981', '#D99B26'],
+                        borderWidth: 2,
+                        borderRadius: 8,
+                        barThickness: 50
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return `${getSymbol()} ${context.raw.toFixed(2)}`;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            grid: { color: 'rgba(60, 42, 30, 0.5)' },
+                            ticks: { color: '#D6C4B0', font: { family: 'JetBrains Mono', size: 10 } }
+                        },
+                        x: {
+                            grid: { display: false },
+                            ticks: { color: '#F6EFE6', font: { weight: 'bold' } }
+                        }
+                    }
+                }
+            });
+
+            const tagMap = {};
+            filteredList.filter(t => t.type === 'expense').forEach(t => {
+                const tag = t.tag || '#SinEtiqueta';
+                tagMap[tag] = (tagMap[tag] || 0) + t.amount;
+            });
+
+            const doughnutLabels = Object.keys(tagMap);
+            const doughnutData = Object.values(tagMap);
+
+            const colors = [
+                '#D99B26', '#B8432E', '#10B981', '#3B82F6', 
+                '#F59E0B', '#EC4899', '#14B8A6', '#8B5CF6'
+            ];
+
+            const ctxDoughnut = document.getElementById('doughnutChartCategories').getContext('2d');
+            if (chartDoughnutInstance) chartDoughnutInstance.destroy();
+
+            if (doughnutLabels.length === 0) {
+                chartDoughnutInstance = new Chart(ctxDoughnut, {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['Sin Gastos'],
+                        datasets: [{ data: [1], backgroundColor: ['#3C2A1E'] }]
+                    },
+                    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
+                });
+            } else {
+                chartDoughnutInstance = new Chart(ctxDoughnut, {
+                    type: 'doughnut',
+                    data: {
+                        labels: doughnutLabels,
+                        datasets: [{
+                            data: doughnutData,
+                            backgroundColor: colors.slice(0, doughnutLabels.length),
+                            borderWidth: 2,
+                            borderColor: '#221812'
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                position: 'bottom',
+                                labels: { color: '#D6C4B0', boxWidth: 12, font: { size: 11 } }
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        return ` ${context.label}: ${getSymbol()} ${context.raw.toFixed(2)}`;
+                                    }
+                                }
+                            }
+                        },
+                        cutout: '70%'
+                    }
+                });
+            }
+        }
+
+        window.setListFilter = function(filter) {
+            currentListFilter = filter;
+            
+            const tabMap = {
+                'all': 'tabAll',
+                'income': 'tabIncome',
+                'expense': 'tabExpense',
+                'receivable': 'tabReceivables',
+                'debt': 'tabDebts'
+            };
+
+            Object.keys(tabMap).forEach(key => {
+                const btnId = tabMap[key];
+                const btn = document.getElementById(btnId);
+                if (btn) {
+                    if (key === filter) {
+                        btn.className = "px-4 py-2 rounded-xl text-xs font-bold transition-all bg-brandTerracotta text-white shadow-md whitespace-nowrap";
+                    } else {
+                        btn.className = "px-4 py-2 rounded-xl text-xs font-bold transition-all text-amber-200/60 hover:text-white hover:bg-darkHover whitespace-nowrap";
+                    }
+                }
+            });
+
+            renderTransactionsList();
+        };
+
+        window.renderTransactionsList = function() {
+            const tbody = document.getElementById('transactionsTableBody');
+            const emptyState = document.getElementById('emptyState');
+            const searchVal = document.getElementById('searchInput').value.toLowerCase();
+            const selectedTag = document.getElementById('tagFilterSelect').value;
+
+            tbody.innerHTML = '';
+
+            let list = [...(appState.transactions[appState.currentCurrency] || [])];
+            list = filterByPeriod(list);
+
+            if (currentListFilter !== 'all') {
+                list = list.filter(item => item.type === currentListFilter);
+            }
+
+            if (selectedTag !== 'all') {
+                list = list.filter(item => item.tag === selectedTag);
+            }
+
+            if (searchVal.trim() !== '') {
+                list = list.filter(item => 
+                    (item.description && item.description.toLowerCase().includes(searchVal)) ||
+                    (item.tag && item.tag.toLowerCase().includes(searchVal))
+                );
+            }
+
+            list.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+            if (list.length === 0) {
+                emptyState.classList.remove('hidden');
+                return;
+            } else {
+                emptyState.classList.add('hidden');
+            }
+
+            list.forEach(tx => {
+                const tr = document.createElement('tr');
+                tr.className = "hover:bg-darkHover/40 transition-colors";
+
+                let typeBadge = '';
+                let amountColor = '';
+                
+                if (tx.type === 'income') {
+                    typeBadge = `<span class="px-2 py-0.5 rounded-md bg-emerald-500/15 text-accentGreen text-[10px] font-bold border border-emerald-500/30">Ingreso</span>`;
+                    amountColor = 'text-accentGreen';
+                } else if (tx.type === 'expense') {
+                    typeBadge = `<span class="px-2 py-0.5 rounded-md bg-red-500/15 text-accentRed text-[10px] font-bold border border-red-500/30">Gasto</span>`;
+                    amountColor = 'text-accentRed';
+                } else if (tx.type === 'receivable') {
+                    typeBadge = `<span class="px-2 py-0.5 rounded-md bg-blue-500/15 text-accentBlue text-[10px] font-bold border border-blue-500/30">Por Cobrar</span>`;
+                    amountColor = 'text-accentBlue';
+                } else if (tx.type === 'debt') {
+                    typeBadge = `<span class="px-2 py-0.5 rounded-md bg-amber-500/15 text-brandGoldLight text-[10px] font-bold border border-brandGold/30">Deuda Pasiva</span>`;
+                    amountColor = 'text-brandGoldLight';
+                }
+
+                let optionsCell = '-';
+
+                if (tx.type === 'receivable') {
+                    if (tx.status === 'pending') {
+                        optionsCell = `
+                            <div class="flex items-center justify-center gap-1.5">
+                                <button onclick="openModalPartial('${tx.id}', 'receivable')" class="px-2 py-1 rounded-lg bg-blue-500/20 hover:bg-accentBlue text-accentBlue hover:text-white transition-all text-[11px] font-bold" title="Cobrar solo una parte">
+                                    Cobrado Parcialmente
+                                </button>
+                                <button onclick="settleFullItem('${tx.id}', 'receivable')" class="px-2 py-1 rounded-lg bg-emerald-500/20 hover:bg-accentGreen text-accentGreen hover:text-white transition-all text-[11px] font-bold" title="Cobrar el total">
+                                    Cobrado Totalmente
+                                </button>
+                            </div>
+                        `;
+                    } else {
+                        optionsCell = `<span class="text-accentGreen text-[11px] font-bold"><i class="fa-solid fa-circle-check"></i> Cobrado Totalmente</span>`;
+                    }
+                } else if (tx.type === 'debt') {
+                    if (tx.status === 'pending') {
+                        optionsCell = `
+                            <div class="flex items-center justify-center gap-1.5">
+                                <button onclick="openModalPartial('${tx.id}', 'debt')" class="px-2 py-1 rounded-lg bg-amber-500/20 hover:bg-brandGold text-brandGoldLight hover:text-darkBg transition-all text-[11px] font-bold" title="Pagar solo una parte">
+                                    Deuda Pagada Parcialmente
+                                </button>
+                                <button onclick="settleFullItem('${tx.id}', 'debt')" class="px-2 py-1 rounded-lg bg-red-500/20 hover:bg-accentRed text-accentRed hover:text-white transition-all text-[11px] font-bold" title="Pagar la deuda completa">
+                                    Deuda Pagada Totalmente
+                                </button>
+                            </div>
+                        `;
+                    } else {
+                        optionsCell = `<span class="text-accentRed text-[11px] font-bold"><i class="fa-solid fa-circle-check"></i> Pagado Totalmente</span>`;
+                    }
+                }
+
+                let amountDisplay = `${getSymbol()} ${tx.amount.toFixed(2)}`;
+                if ((tx.type === 'receivable' || tx.type === 'debt') && tx.status === 'pending' && tx.pendingAmount !== undefined && tx.pendingAmount < tx.amount) {
+                    amountDisplay = `<span class="text-brandCream font-bold">${getSymbol()} ${tx.pendingAmount.toFixed(2)}</span> <span class="text-[10px] text-amber-200/50 block font-normal">Inicial: ${getSymbol()} ${tx.amount.toFixed(2)}</span>`;
+                }
+
+                tr.innerHTML = `
+                    <td class="p-4 font-mono text-amber-200/70 text-[11px]">${tx.date}</td>
+                    <td class="p-4">${typeBadge}</td>
+                    <td class="p-4 font-semibold text-brandCream">${tx.description}</td>
+                    <td class="p-4"><span class="px-2 py-0.5 rounded-md bg-darkBg text-brandGoldLight border border-darkBorder font-mono text-[10px]">${tx.tag}</span></td>
+                    <td class="p-4 text-right font-mono font-bold ${amountColor}">${amountDisplay}</td>
+                    <td class="p-4 text-center">${optionsCell}</td>
+                    <td class="p-4 text-center">
+                        <button onclick="deleteTransaction('${tx.id}')" class="text-amber-200/40 hover:text-accentRed p-1.5 rounded-lg hover:bg-red-500/10 transition-colors" title="Eliminar registro">
+                            <i class="fa-solid fa-trash-can"></i>
+                        </button>
+                    </td>
+                `;
+
+                tbody.appendChild(tr);
+            });
+        };
+
+        window.openModalTransaction = function() {
+            const modal = document.getElementById('modalTransaction');
+            document.getElementById('txDate').value = getPeruDateISO();
+            modal.classList.remove('modal-hidden');
+            updateFormFields();
+        };
+
+        window.closeModalTransaction = function() {
+            const modal = document.getElementById('modalTransaction');
+            modal.classList.add('modal-hidden');
+            document.getElementById('transactionForm').reset();
+        };
+
+        window.updateFormFields = function() {
+            const selectedType = document.querySelector('input[name="txType"]:checked').value;
+            const label = document.getElementById('subjectLabel');
+            const descInput = document.getElementById('txDescription');
+
+            if (selectedType === 'receivable') {
+                label.innerText = "Deudor (¿Quién te debe?)";
+                descInput.placeholder = "Ej: Cliente / Reparación pendiente";
+            } else if (selectedType === 'debt') {
+                label.innerText = "Acreedor (¿A quién le debes?)";
+                descInput.placeholder = "Ej: Proveedor / Tarjeta / Préstamo";
+            } else {
+                label.innerText = "Descripción / Detalle";
+                descInput.placeholder = "Ej: Venta DVELA SHOP, Servicio Técnico, Insumos...";
+            }
+        };
+
+        window.handleFormSubmit = function(e) {
+            e.preventDefault();
+
+            const type = document.querySelector('input[name="txType"]:checked').value;
+            const amount = parseFloat(document.getElementById('txAmount').value);
+            const date = document.getElementById('txDate').value;
+            const description = document.getElementById('txDescription').value;
+            const tag = document.getElementById('txTagSelect').value;
+
+            const newTx = {
+                id: Date.now().toString(),
+                type: type,
+                amount: amount,
+                pendingAmount: amount,
+                date: date,
+                description: description,
+                tag: tag,
+                status: (type === 'receivable' || type === 'debt') ? 'pending' : 'completed'
+            };
+
+            appState.transactions[appState.currentCurrency].push(newTx);
+            saveDataToStorage();
+            closeModalTransaction();
+            renderAll();
+        };
+
+        window.openModalPartial = function(id, type) {
+            const list = appState.transactions[appState.currentCurrency];
+            const item = list.find(t => t.id === id);
+
+            if (!item) return;
+
+            activePartialTargetId = id;
+            activePartialType = type;
+
+            const pending = item.pendingAmount !== undefined ? item.pendingAmount : item.amount;
+            
+            document.getElementById('modalPartialPendingAmount').innerText = formatMoney(pending);
+            document.getElementById('partialDate').value = getPeruDateISO();
+            
+            if (type === 'receivable') {
+                document.getElementById('modalPartialTitle').innerText = `Abono de Cobro: ${item.description}`;
+                document.getElementById('partialAmountLabel').innerText = "Monto Cobrado (Ingresará a tus entradas)";
+            } else {
+                document.getElementById('modalPartialTitle').innerText = `Abono de Deuda: ${item.description}`;
+                document.getElementById('partialAmountLabel').innerText = "Monto Pagado (Registrará como gasto)";
+            }
+
+            document.getElementById('partialAmount').max = pending;
+            document.getElementById('partialAmount').value = '';
+
+            const modal = document.getElementById('modalPartialPayment');
+            modal.classList.remove('modal-hidden');
+        };
+
+        window.closeModalPartial = function() {
+            const modal = document.getElementById('modalPartialPayment');
+            modal.classList.add('modal-hidden');
+            activePartialTargetId = null;
+            activePartialType = null;
+        };
+
+        window.handlePartialFormSubmit = function(e) {
+            e.preventDefault();
+
+            if (!activePartialTargetId || !activePartialType) return;
+
+            const list = appState.transactions[appState.currentCurrency];
+            const item = list.find(t => t.id === activePartialTargetId);
+
+            if (!item) return;
+
+            const partialAmount = parseFloat(document.getElementById('partialAmount').value);
+            const partialDate = document.getElementById('partialDate').value;
+            const currentPending = item.pendingAmount !== undefined ? item.pendingAmount : item.amount;
+
+            if (partialAmount <= 0 || partialAmount > currentPending) {
+                alert("El monto ingresado es inválido o supera el saldo pendiente.");
+                return;
+            }
+
+            item.pendingAmount = currentPending - partialAmount;
+
+            if (item.pendingAmount <= 0.001) {
+                item.pendingAmount = 0;
+                item.status = 'settled';
+            }
+
+            if (activePartialType === 'receivable') {
+                const newIncome = {
+                    id: Date.now().toString(),
+                    type: 'income',
+                    amount: partialAmount,
+                    date: partialDate,
+                    description: `Cobrado Parcialmente: ${item.description}`,
+                    tag: '#CobroParcial',
+                    status: 'completed'
+                };
+                list.push(newIncome);
+            } else if (activePartialType === 'debt') {
+                const newExpense = {
+                    id: Date.now().toString(),
+                    type: 'expense',
+                    amount: partialAmount,
+                    date: partialDate,
+                    description: `Deuda Pagada Parcialmente: ${item.description}`,
+                    tag: '#PagoDeuda',
+                    status: 'completed'
+                };
+                list.push(newExpense);
+            }
+
+            saveDataToStorage();
+            closeModalPartial();
+            renderAll();
+        };
+
+        window.settleFullItem = function(id, type) {
+            const list = appState.transactions[appState.currentCurrency];
+            const item = list.find(t => t.id === id);
+
+            if (!item) return;
+
+            const amountToSettle = item.pendingAmount !== undefined ? item.pendingAmount : item.amount;
+
+            item.pendingAmount = 0;
+            item.status = 'settled';
+
+            const today = getPeruDateISO();
+
+            if (type === 'receivable') {
+                const newIncome = {
+                    id: Date.now().toString(),
+                    type: 'income',
+                    amount: amountToSettle,
+                    date: today,
+                    description: `Cobrado Totalmente: ${item.description}`,
+                    tag: item.tag || '#CobroTotal',
+                    status: 'completed'
+                };
+                list.push(newIncome);
+            } else if (type === 'debt') {
+                const newExpense = {
+                    id: Date.now().toString(),
+                    type: 'expense',
+                    amount: amountToSettle,
+                    date: today,
+                    description: `Deuda Pagada Totalmente: ${item.description}`,
+                    tag: item.tag || '#DeudaPagadaTotal',
+                    status: 'completed'
+                };
+                list.push(newExpense);
+            }
+
+            saveDataToStorage();
+            renderAll();
+        };
+
+        window.deleteTransaction = function(id) {
+            const list = appState.transactions[appState.currentCurrency];
+            appState.transactions[appState.currentCurrency] = list.filter(t => t.id !== id);
+            saveDataToStorage();
+            renderAll();
+        };
+
+        window.promptNewTag = function() {
+            const newTag = prompt("Ingresa el nombre de la nueva etiqueta (Ej: #DvelaShop):");
+            if (newTag && newTag.trim() !== '') {
+                let formattedTag = newTag.trim();
+                if (!formattedTag.startsWith('#')) formattedTag = '#' + formattedTag;
+                
+                if (!appState.tags.includes(formattedTag)) {
+                    appState.tags.push(formattedTag);
+                    saveDataToStorage();
+                    updateTagDropdowns();
+                    document.getElementById('txTagSelect').value = formattedTag;
+                }
+            }
+        };
+
+        function updateTagDropdowns() {
+            const txSelect = document.getElementById('txTagSelect');
+            const filterSelect = document.getElementById('tagFilterSelect');
+
+            txSelect.innerHTML = '';
+            filterSelect.innerHTML = '<option value="all">Todas las Etiquetas</option>';
+
+            appState.tags.forEach(tag => {
+                const opt1 = document.createElement('option');
+                opt1.value = tag;
+                opt1.innerText = tag;
+                txSelect.appendChild(opt1);
+
+                const opt2 = document.createElement('option');
+                opt2.value = tag;
+                opt2.innerText = tag;
+                filterSelect.appendChild(opt2);
+            });
+        }
+
+        window.exportData = function() {
+            downloadBackupFile();
+        };
+
+        window.importData = function(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            const fileReader = new FileReader();
+            fileReader.onload = function(e) {
+                try {
+                    const importedState = JSON.parse(e.target.result);
+                    if (importedState.transactions && importedState.tags) {
+                        appState = { ...appState, ...importedState };
+                        saveDataToStorage();
+                        setupCurrencyUI();
+                        updateTagDropdowns();
+                        renderAll();
+                        showToast("Backup Importado", "Movimientos cargados y subidos a la nube");
+                    } else {
+                        alert("El archivo subido no tiene un formato válido.");
+                    }
+                } catch (err) {
+                    alert("Error al leer el archivo JSON.");
+                }
+            };
+            fileReader.readAsText(file);
+        };
+
+        window.confirmResetData = function() {
+            if (confirm("¿Borrar todos los registros? Esta acción también limpiará la nube.")) {
+                appState.transactions = { PEN: [], EUR: [] };
+                saveDataToStorage();
+                renderAll();
+            }
+        };
+    </script>
+</body>
+</html>
